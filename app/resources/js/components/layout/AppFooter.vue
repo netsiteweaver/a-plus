@@ -48,10 +48,28 @@
                             </button>
                         </div>
                     </form>
-                    <div class="flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
-                        <a href="#" class="transition hover:text-sky-600" aria-label="Instagram">IG</a>
-                        <a href="#" class="transition hover:text-sky-600" aria-label="Twitter">TW</a>
-                        <a href="#" class="transition hover:text-sky-600" aria-label="YouTube">YT</a>
+                    <div class="flex items-center gap-3 text-slate-500">
+                        <a href="#" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white transition hover:border-sky-400 hover:text-sky-600" aria-label="Instagram">
+                            <span class="sr-only">Instagram</span>
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                <rect x="2.75" y="2.75" width="18.5" height="18.5" rx="5" />
+                                <circle cx="12" cy="12" r="4.25" />
+                                <circle cx="17" cy="7" r="1.25" fill="currentColor" stroke="none" />
+                            </svg>
+                        </a>
+                        <a href="#" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white transition hover:border-sky-400 hover:text-sky-600" aria-label="X (Twitter)">
+                            <span class="sr-only">X (Twitter)</span>
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 4.5 9.75 12 4 19.5h3.2L12 14l4.8 5.5h3.2L14.25 12 20 4.5h-3.2L12 10l-4.8-5.5z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white transition hover:border-sky-400 hover:text-sky-600" aria-label="YouTube">
+                            <span class="sr-only">YouTube</span>
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M3.75 7.5a2.25 2.25 0 0 1 2.137-2.22C7.83 5.025 9.907 4.875 12 4.875s4.17.15 6.113.405a2.25 2.25 0 0 1 2.137 2.22v8.999a2.25 2.25 0 0 1-2.137 2.22c-1.943.255-4.02.405-6.113.405s-4.17-.15-6.113-.405a2.25 2.25 0 0 1-2.137-2.22z" />
+                                <path d="M10.5 9.75v4.5l4-2.25-4-2.25z" fill="currentColor" stroke="none" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -43,8 +43,13 @@
                     member perks
                 </button>
                 <RouterLink to="/support" class="hidden text-sm transition hover:text-sky-700 md:block">Help</RouterLink>
-                <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition hover:border-sky-400 hover:text-sky-700" @click="toggleCartDrawer">
-                    <span class="text-xs font-semibold uppercase tracking-[0.3em]">Cart</span>
+                <button class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] transition hover:border-sky-400 hover:text-sky-700" @click="toggleCartDrawer" aria-label="Toggle cart drawer">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M2.25 3h1.386a1.125 1.125 0 0 1 1.087.835l.383 1.437M7.5 14.25a3 3 0 1 1-6 0" />
+                        <path d="M7.5 14.25h10.128a2.25 2.25 0 0 0 2.206-1.752l1.682-7.367A1.125 1.125 0 0 0 20.418 3H5.106" />
+                        <path d="M7.5 14.25 6.114 8.772M11.25 6.75h1.5M9 11.25h6" />
+                    </svg>
+                    <span>Cart</span>
                 </button>
                 <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition hover:border-sky-400 hover:text-sky-700" @click="toggleMobileMenu" aria-label="Toggle navigation">
                     <span class="text-sm font-semibold uppercase tracking-[0.3em] md:hidden">Menu</span>
