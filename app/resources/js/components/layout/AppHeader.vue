@@ -51,7 +51,12 @@
                     </svg>
                     <span>Cart</span>
                 </button>
-                <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition hover:border-sky-400 hover:text-sky-700" @click="toggleMobileMenu" aria-label="Toggle navigation">
+                <button class="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 px-4 transition hover:border-sky-400 hover:text-sky-700 md:w-10 md:px-0" @click="toggleMobileMenu" aria-label="Toggle navigation">
+                    <svg class="hidden h-5 w-5 md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 7h16" />
+                        <path d="M4 12h16" />
+                        <path d="M4 17h16" />
+                    </svg>
                     <span class="text-sm font-semibold uppercase tracking-[0.3em] md:hidden">Menu</span>
                 </button>
             </div>
