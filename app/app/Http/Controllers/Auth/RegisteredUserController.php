@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
@@ -18,12 +20,13 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'device_name' => ['sometimes', 'string', 'max:255'],
         ]);
 
         $user = User::create([
@@ -38,6 +41,26 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return response()->noContent();
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
+        }
+
+        $deviceName = $request->input('device_name');
+
+        if (! is_string($deviceName) || $deviceName === '') {
+            $deviceName = $request->userAgent() ?: 'web';
+        }
+
+        $deviceName = Str::limit($deviceName, 255, '');
+
+        $user->tokens()->where('name', $deviceName)->delete();
+
+        $token = $user->createToken($deviceName);
+
+        return response()->json([
+            'token' => $token->plainTextToken,
+            'token_type' => 'Bearer',
+            'user' => new UserResource($user),
+        ], 201);
     }
 }

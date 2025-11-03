@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CatalogHomeController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Auth\GoogleOAuthController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,12 @@ Route::prefix('catalog')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::prefix('auth/google')->group(function () {
+    Route::get('/redirect', [GoogleOAuthController::class, 'redirect'])
+        ->middleware('guest:sanctum')
+        ->name('auth.google.redirect');
+
+    Route::get('/callback', [GoogleOAuthController::class, 'callback'])
+        ->name('auth.google.callback');
+});

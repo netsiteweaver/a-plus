@@ -7,6 +7,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class EmailVerificationTest extends TestCase
@@ -29,7 +30,11 @@ class EmailVerificationTest extends TestCase
 
         Event::assertDispatched(Verified::class);
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(config('app.frontend_url').'/dashboard?verified=1');
+        $expectedRedirect = rtrim(config('app.frontend_url'), '/')
+            .Str::start(config('app.frontend_auth_redirect_path', '/auth/callback'), '/')
+            .'#status=email-verified';
+
+        $response->assertRedirect($expectedRedirect);
     }
 
     public function test_email_is_not_verified_with_invalid_hash(): void

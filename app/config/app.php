@@ -55,6 +55,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:5173'),
+    'frontend_auth_redirect_path' => env('FRONTEND_AUTH_REDIRECT_PATH', '/auth/callback'),
 
     /*
     |--------------------------------------------------------------------------
