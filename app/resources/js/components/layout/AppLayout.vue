@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-screen bg-slate-950 text-slate-100">
-        <div class="pointer-events-none fixed inset-x-0 top-0 z-[-1] h-80 bg-gradient-to-b from-emerald-700/10 via-slate-900/40 to-transparent blur-3xl"></div>
+    <div class="min-h-screen bg-slate-100 text-slate-800">
+        <div class="pointer-events-none fixed inset-x-0 top-0 z-[-1] h-80 bg-gradient-to-b from-sky-100 via-white to-transparent blur-3xl"></div>
 
         <AppHeader />
 

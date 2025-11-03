@@ -1,57 +1,57 @@
 <template>
-    <footer class="border-t border-white/10 bg-slate-900/80 py-12 text-sm text-white/60">
+    <footer class="border-t border-slate-200 bg-slate-50 py-12 text-sm text-slate-500">
         <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6 md:flex-row md:justify-between">
             <div class="space-y-4">
-                <div class="flex items-center gap-3 text-white">
-                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">
+                <div class="flex items-center gap-3 text-slate-800">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600">
                         ME
                     </span>
                     <div>
                         <p class="text-sm font-semibold tracking-tight">Mega Electronics</p>
-                        <p class="text-xs uppercase tracking-[0.2em] text-white/40">Since 2011</p>
+                        <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Since 2011</p>
                     </div>
                 </div>
-                <p class="max-w-sm text-sm text-white/60">
+                <p class="max-w-sm text-sm text-slate-500">
                     High-performance devices, smart living solutions, and concierge-grade support. Built with Laravel + Vue + Tailwind.
                 </p>
-                <p class="text-xs text-white/40">&copy; {{ currentYear }} Mega Electronics. All rights reserved.</p>
+                <p class="text-xs text-slate-400">&copy; {{ currentYear }} Mega Electronics. All rights reserved.</p>
             </div>
 
-            <div class="grid flex-1 gap-8 text-sm text-white/60 sm:grid-cols-2 md:grid-cols-3">
+            <div class="grid flex-1 gap-8 text-sm text-slate-500 sm:grid-cols-2 md:grid-cols-3">
                 <div class="space-y-3">
-                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-white/40">Explore</p>
-                    <RouterLink to="/category/laptops" class="block transition hover:text-white">Computers</RouterLink>
-                    <RouterLink to="/category/audio" class="block transition hover:text-white">Audio</RouterLink>
-                    <RouterLink to="/category/smart-home" class="block transition hover:text-white">Smart Home</RouterLink>
-                    <RouterLink to="/category/accessories" class="block transition hover:text-white">Accessories</RouterLink>
+                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">Explore</p>
+                    <RouterLink to="/category/laptops" class="block transition hover:text-sky-600">Computers</RouterLink>
+                    <RouterLink to="/category/audio" class="block transition hover:text-sky-600">Audio</RouterLink>
+                    <RouterLink to="/category/smart-home" class="block transition hover:text-sky-600">Smart Home</RouterLink>
+                    <RouterLink to="/category/accessories" class="block transition hover:text-sky-600">Accessories</RouterLink>
                 </div>
                 <div class="space-y-3">
-                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-white/40">Support</p>
-                    <RouterLink to="/support" class="block transition hover:text-white">Help center</RouterLink>
-                    <RouterLink to="/support/warranty" class="block transition hover:text-white">Warranty</RouterLink>
-                    <RouterLink to="/support/returns" class="block transition hover:text-white">Returns</RouterLink>
-                    <RouterLink to="/support/contact" class="block transition hover:text-white">Contact us</RouterLink>
+                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">Support</p>
+                    <RouterLink to="/support" class="block transition hover:text-sky-600">Help center</RouterLink>
+                    <RouterLink to="/support/warranty" class="block transition hover:text-sky-600">Warranty</RouterLink>
+                    <RouterLink to="/support/returns" class="block transition hover:text-sky-600">Returns</RouterLink>
+                    <RouterLink to="/support/contact" class="block transition hover:text-sky-600">Contact us</RouterLink>
                 </div>
                 <div class="space-y-3">
-                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-white/40">Stay in sync</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">Stay in sync</p>
                     <form class="space-y-3">
-                        <label class="block text-xs text-white/40" for="newsletter">Subscribe for drops &amp; deals</label>
-                        <div class="flex rounded-full border border-white/10 bg-slate-900/80 p-1">
+                        <label class="block text-xs text-slate-400" for="newsletter">Subscribe for drops &amp; deals</label>
+                        <div class="flex rounded-full border border-slate-200 bg-white p-1">
                             <input
                                 id="newsletter"
                                 type="email"
                                 placeholder="you@example.com"
-                                class="flex-1 bg-transparent px-3 text-xs text-white placeholder:text-white/30 focus:outline-none"
+                                class="flex-1 bg-transparent px-3 text-xs text-slate-600 placeholder:text-slate-400 focus:outline-none"
                             />
-                            <button type="button" class="rounded-full bg-emerald-500/80 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-slate-900 transition hover:bg-emerald-400">
+                            <button type="button" class="rounded-full bg-sky-600 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-sky-500">
                                 Join
                             </button>
                         </div>
                     </form>
-                    <div class="flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em] text-white/50">
-                        <a href="#" class="transition hover:text-white" aria-label="Instagram">IG</a>
-                        <a href="#" class="transition hover:text-white" aria-label="Twitter">TW</a>
-                        <a href="#" class="transition hover:text-white" aria-label="YouTube">YT</a>
+                    <div class="flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+                        <a href="#" class="transition hover:text-sky-600" aria-label="Instagram">IG</a>
+                        <a href="#" class="transition hover:text-sky-600" aria-label="Twitter">TW</a>
+                        <a href="#" class="transition hover:text-sky-600" aria-label="YouTube">YT</a>
                     </div>
                 </div>
             </div>

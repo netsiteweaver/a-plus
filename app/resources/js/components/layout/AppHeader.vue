@@ -1,9 +1,9 @@
 <template>
-    <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-900/80 backdrop-blur-xl">
-        <div class="hidden border-b border-white/5 bg-slate-900/70 text-xs text-white/60 md:block">
+    <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 text-slate-700 backdrop-blur-xl">
+        <div class="hidden border-b border-sky-100 bg-sky-50/90 text-xs text-slate-600 md:block">
             <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
                 <p class="flex items-center gap-2">
-                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400"></span>
+                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-sky-500"></span>
                     Mega Electronics - premium tech, next-day delivery in select cities.
                 </p>
                 <nav class="flex items-center gap-5">
@@ -11,7 +11,7 @@
                         v-for="item in utilityNavigation"
                         :key="item.to"
                         :to="item.to"
-                        class="transition hover:text-white"
+                        class="transition hover:text-sky-700"
                     >
                         {{ item.label }}
                     </RouterLink>
@@ -20,8 +20,8 @@
         </div>
 
         <div class="mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
-            <RouterLink to="/" class="flex items-center gap-3 text-lg font-semibold tracking-tight text-white">
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">
+            <RouterLink to="/" class="flex items-center gap-3 text-lg font-semibold tracking-tight text-slate-800">
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600">
                     ME
                 </span>
                 <span class="hidden sm:inline">Mega Electronics</span>
@@ -31,43 +31,43 @@
                 <input
                     type="search"
                     placeholder="Search laptops, wearables, smart home..."
-                    class="w-full rounded-full border border-white/10 bg-slate-900/70 px-5 py-2.5 text-sm text-white/80 placeholder:text-white/40 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/40"
+                    class="w-full rounded-full border border-slate-200 bg-white/90 px-5 py-2.5 text-sm text-slate-600 placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
                 />
-                <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-xs uppercase tracking-[0.2em] text-white/30">
+                <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-xs uppercase tracking-[0.2em] text-slate-400">
                     CTRL+K
                 </span>
             </div>
 
-            <div class="ml-auto flex items-center gap-3 text-white/70">
-                <button class="hidden rounded-full border border-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300 hover:border-emerald-300/60 hover:text-emerald-200 lg:inline-flex">
+            <div class="ml-auto flex items-center gap-3 text-slate-600">
+                <button class="hidden rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-sky-600 transition hover:border-sky-400 hover:text-sky-700 lg:inline-flex">
                     member perks
                 </button>
-                <RouterLink to="/support" class="hidden text-sm transition hover:text-white md:block">Help</RouterLink>
-                <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 transition hover:border-emerald-400/40 hover:text-white" @click="toggleCartDrawer">
+                <RouterLink to="/support" class="hidden text-sm transition hover:text-sky-700 md:block">Help</RouterLink>
+                <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition hover:border-sky-400 hover:text-sky-700" @click="toggleCartDrawer">
                     <span class="text-xs font-semibold uppercase tracking-[0.3em]">Cart</span>
                 </button>
-                <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 transition hover:border-emerald-400/40 hover:text-white" @click="toggleMobileMenu" aria-label="Toggle navigation">
+                <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition hover:border-sky-400 hover:text-sky-700" @click="toggleMobileMenu" aria-label="Toggle navigation">
                     <span class="text-sm font-semibold uppercase tracking-[0.3em] md:hidden">Menu</span>
                 </button>
             </div>
         </div>
 
-        <div class="relative hidden border-t border-white/5 md:block">
+        <div class="relative hidden border-t border-slate-200 md:block">
             <nav class="mx-auto flex max-w-6xl items-center px-6">
                 <RouterLink
                     v-for="item in primaryNavigation"
                     :key="item.label"
                     :to="item.to"
-                    class="relative flex items-center gap-2 px-4 py-3 text-sm font-medium text-white/70 transition hover:text-white"
+                    class="relative flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-600 transition hover:text-sky-700"
                     @mouseenter="handleMegaEnter(item)"
                     @focusin="handleMegaEnter(item)"
                     @mouseleave="handleMegaLeave"
                 >
                     <span>{{ item.label }}</span>
-                    <span v-if="item.columns" class="text-xs text-white/40">v</span>
+                    <span v-if="item.columns" class="text-xs text-slate-400">v</span>
                 </RouterLink>
                 <div class="flex-1"></div>
-                <RouterLink to="/category/deals" class="inline-flex items-center gap-2 rounded-full border border-emerald-500/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300 transition hover:border-emerald-300 hover:text-emerald-200">
+                <RouterLink to="/category/deals" class="inline-flex items-center gap-2 rounded-full border border-sky-500/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-sky-600 transition hover:border-sky-500 hover:text-sky-700">
                     Deals live now
                 </RouterLink>
             </nav>
@@ -84,11 +84,11 @@
         <transition name="fade">
             <div
                 v-if="ui.isMobileMenuOpen"
-                class="fixed inset-0 z-50 flex flex-col bg-slate-950/95 px-6 py-8 text-lg text-white"
+                class="fixed inset-0 z-50 flex flex-col bg-white/95 px-6 py-8 text-lg text-slate-700 backdrop-blur-sm"
             >
                 <div class="mb-6 flex items-center justify-between">
-                    <span class="text-sm uppercase tracking-[0.28em] text-white/40">Browse</span>
-                    <button class="rounded-full border border-white/20 px-3 py-1 text-sm text-white/80" @click="toggleMobileMenu(false)">
+                    <span class="text-sm uppercase tracking-[0.28em] text-slate-400">Browse</span>
+                    <button class="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-600 transition hover:border-sky-400 hover:text-sky-700" @click="toggleMobileMenu(false)">
                         Close
                     </button>
                 </div>
@@ -97,18 +97,18 @@
                         v-for="item in primaryNavigation"
                         :key="item.label"
                         :to="item.to"
-                        class="block text-white/80 transition hover:text-white"
+                        class="block text-slate-600 transition hover:text-sky-700"
                         @click.native="toggleMobileMenu(false)"
                     >
                         {{ item.label }}
                     </RouterLink>
                 </nav>
-                <div class="mt-10 space-y-3 text-sm text-white/60">
+                <div class="mt-10 space-y-3 text-sm text-slate-500">
                     <RouterLink
                         v-for="item in utilityNavigation"
                         :key="item.to"
                         :to="item.to"
-                        class="block transition hover:text-white"
+                        class="block transition hover:text-sky-700"
                         @click.native="toggleMobileMenu(false)"
                     >
                         {{ item.label }}
