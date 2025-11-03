@@ -22,9 +22,9 @@
             <div class="flex items-start justify-between gap-4 text-sm text-white/60">
                 <p class="text-xs uppercase tracking-[0.25em] text-emerald-200/70">in stock</p>
                 <div class="flex items-center gap-1 text-xs text-white/40">
-                    <span>?</span>
-                    <span>{{ product.rating.toFixed(1) }}</span>
-                    <span class="text-white/30">({{ product.ratingCount }})</span>
+                    <span>★</span>
+                    <span>{{ Number(product.rating ?? 0).toFixed(1) }}</span>
+                    <span class="text-white/30">({{ product.rating_count ?? 0 }})</span>
                 </div>
             </div>
 
@@ -36,7 +36,7 @@
 
             <div class="mt-auto flex items-baseline gap-3 pt-2">
                 <span class="text-lg font-semibold text-white">{{ formatCurrency(product.price) }}</span>
-                <span v-if="product.compareAtPrice" class="text-sm text-white/30 line-through">{{ formatCurrency(product.compareAtPrice) }}</span>
+                <span v-if="product.compare_at_price" class="text-sm text-white/30 line-through">{{ formatCurrency(product.compare_at_price) }}</span>
             </div>
         </div>
     </RouterLink>
@@ -55,5 +55,5 @@ const formatCurrency = (value) =>
         style: 'currency',
         currency: 'USD',
         maximumFractionDigits: 0,
-    }).format(value);
+    }).format(value ?? 0);
 </script>

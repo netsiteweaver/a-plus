@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RbacSeeder::class);
 
+        $this->call(CatalogSeeder::class);
+
         // Seed a default admin account for initial access if it doesn't already exist.
         $admin = User::firstOrCreate(
             ['email' => 'admin@example.com'],
