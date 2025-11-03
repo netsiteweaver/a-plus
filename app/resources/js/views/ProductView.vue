@@ -9,38 +9,38 @@
 
             <section class="space-y-8 lg:col-span-7">
                 <header class="space-y-4">
-                    <div class="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-emerald-300">
+                    <div class="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-blue-600">
                         <span>{{ product.badge ?? 'New arrival' }}</span>
-                        <span class="hidden h-0.5 w-8 bg-emerald-300/20 md:block"></span>
+                        <span class="hidden h-0.5 w-8 bg-blue-200 md:block"></span>
                         <span>{{ product.brand }}</span>
                     </div>
-                    <h1 class="text-3xl font-semibold text-white">{{ product.name }}</h1>
-                    <p class="text-sm text-white/60">{{ product.subtitle }}</p>
+                    <h1 class="text-3xl font-semibold text-slate-900">{{ product.name }}</h1>
+                    <p class="text-sm text-slate-600">{{ product.subtitle }}</p>
 
-                    <div class="flex flex-wrap items-center gap-4 text-sm text-white/70">
-                        <span class="inline-flex items-center gap-2 text-white">
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                        <span class="inline-flex items-center gap-2 text-slate-900">
                             <span class="text-xl font-semibold">{{ formatCurrency(product.price) }}</span>
-                            <span v-if="product.compare_at_price" class="text-sm text-white/40 line-through">{{ formatCurrency(product.compare_at_price) }}</span>
+                            <span v-if="product.compare_at_price" class="text-sm text-slate-400 line-through">{{ formatCurrency(product.compare_at_price) }}</span>
                         </span>
-                        <span class="inline-flex items-center gap-2 text-emerald-300">
+                        <span class="inline-flex items-center gap-2 text-blue-600">
                             * {{ product.rating.toFixed(1) }}
-                            <span class="text-white/40">({{ product.rating_count }} reviews)</span>
+                            <span class="text-slate-400">({{ product.rating_count }} reviews)</span>
                         </span>
-                        <span class="text-white/40">SKU {{ product.sku }}</span>
+                        <span class="text-slate-400">SKU {{ product.sku }}</span>
                     </div>
                 </header>
 
                 <div class="space-y-6">
                     <div v-for="option in options" :key="option.code" class="space-y-2">
-                        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-white/40">{{ option.name }}</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">{{ option.name }}</p>
                         <div v-if="option.code === 'color'" class="flex flex-wrap gap-2">
                             <button
                                 v-for="value in option.values"
                                 :key="value.id"
                                 type="button"
                                 :style="{ backgroundColor: value.hex_value ?? '#1e293b' }"
-                                class="h-10 w-10 rounded-full border border-white/10 transition hover:border-emerald-300"
-                                :class="selectedColor === value.value ? 'ring-2 ring-emerald-300' : ''"
+                                class="h-10 w-10 rounded-full border border-slate-200 transition hover:border-blue-500"
+                                :class="selectedColor === value.value ? 'ring-2 ring-blue-400 border-blue-500' : ''"
                                 @click="selectedColor = value.value"
                             >
                                 <span class="sr-only">{{ value.display_value }}</span>
@@ -51,8 +51,8 @@
                                 v-for="value in option.values"
                                 :key="value.id"
                                 type="button"
-                                class="rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.25em] text-white/70 transition hover:border-emerald-400/40"
-                                :class="selectedStorage === value.value ? 'border-emerald-400/60 text-emerald-200' : ''"
+                                class="rounded-full border border-slate-200 px-4 py-2 text-xs uppercase tracking-[0.25em] text-slate-600 transition hover:border-blue-400/60 hover:text-blue-600"
+                                :class="selectedStorage === value.value ? 'border-blue-500 text-blue-600' : ''"
                                 @click="selectedStorage = value.value"
                             >
                                 {{ value.display_value }}
@@ -61,37 +61,37 @@
                     </div>
                 </div>
 
-                <div class="space-y-4 text-sm text-white/60">
-                    <h2 class="text-xs font-semibold uppercase tracking-[0.28em] text-white/40">Key features</h2>
+                <div class="space-y-4 text-sm text-slate-600">
+                    <h2 class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Key features</h2>
                     <ul class="grid gap-3 sm:grid-cols-2">
                         <li v-for="spec in featureHighlights" :key="spec" class="flex items-start gap-2">
-                            <span class="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-300"></span>
+                            <span class="mt-1 inline-block h-2 w-2 rounded-full bg-blue-500"></span>
                             <span>{{ spec }}</span>
                         </li>
                     </ul>
                 </div>
 
                 <div class="flex flex-wrap gap-3 text-sm">
-                    <button class="rounded-full bg-emerald-400 px-6 py-3 font-semibold uppercase tracking-[0.28em] text-slate-950 transition hover:bg-emerald-300">
+                    <button class="rounded-full bg-blue-600 px-6 py-3 font-semibold uppercase tracking-[0.28em] text-white transition hover:bg-blue-500">
                         Add to cart
                     </button>
-                    <button class="rounded-full border border-white/10 px-6 py-3 text-sm uppercase tracking-[0.28em] text-white transition hover:border-emerald-400/40">
+                    <button class="rounded-full border border-slate-200 px-6 py-3 text-sm uppercase tracking-[0.28em] text-slate-600 transition hover:border-blue-400/60 hover:text-blue-600">
                         Add to compare
                     </button>
-                    <button class="rounded-full border border-white/10 px-6 py-3 text-sm uppercase tracking-[0.28em] text-white transition hover:border-emerald-400/40">
+                    <button class="rounded-full border border-slate-200 px-6 py-3 text-sm uppercase tracking-[0.28em] text-slate-600 transition hover:border-blue-400/60 hover:text-blue-600">
                         Save to wishlist
                     </button>
                 </div>
 
                 <div class="space-y-4">
-                    <h2 class="text-xs font-semibold uppercase tracking-[0.28em] text-white/40">Specification snapshot</h2>
-                    <div class="grid gap-4 rounded-3xl border border-white/10 bg-slate-900/70 p-6 md:grid-cols-2">
-                        <div v-for="group in product.specifications" :key="group.label" class="space-y-3 text-sm text-white/60">
-                            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-white/40">{{ group.label }}</p>
+                    <h2 class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Specification snapshot</h2>
+                    <div class="grid gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:grid-cols-2">
+                        <div v-for="group in product.specifications" :key="group.label" class="space-y-3 text-sm text-slate-600">
+                            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">{{ group.label }}</p>
                             <ul class="space-y-2">
                                 <li v-for="item in group.items" :key="item.label">
-                                    <span class="text-white/50">{{ item.label }}:</span>
-                                    <span class="text-white/80"> {{ item.value }}</span>
+                                    <span class="text-slate-500">{{ item.label }}:</span>
+                                    <span class="text-slate-700"> {{ item.value }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -102,13 +102,13 @@
 
         <section v-if="relatedProducts.length" class="space-y-6">
             <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-semibold text-white">Recommended accessories</h2>
-                <RouterLink :to="'/category/' + route.params.slug" class="text-sm text-emerald-300 transition hover:text-emerald-200">View all -></RouterLink>
+                <h2 class="text-2xl font-semibold text-slate-900">Recommended accessories</h2>
+                <RouterLink :to="'/category/' + route.params.slug" class="text-sm text-blue-600 transition hover:text-blue-700">View all -></RouterLink>
             </div>
             <ProductGrid :products="relatedProducts" dense />
         </section>
     </div>
-    <div v-else class="py-24 text-center text-sm uppercase tracking-[0.3em] text-white/40">Loading product...</div>
+    <div v-else class="py-24 text-center text-sm uppercase tracking-[0.3em] text-slate-400">Loading product...</div>
 </template>
 
 <script setup>
