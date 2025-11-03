@@ -72,7 +72,12 @@
                 </RouterLink>
             </nav>
 
-            <MegaMenu :section="activeMegaSection" @close="closeMegaMenu" @mouseleave.native="closeMegaMenu" />
+            <MegaMenu
+                :section="activeMegaSection"
+                @close="closeMegaMenu"
+                @mouseenter.native="cancelMegaClose"
+                @mouseleave.native="scheduleMegaClose"
+            />
         </div>
 
         <!-- Mobile menu overlay -->
@@ -124,19 +129,45 @@ import { useUiStore } from '@/stores/ui';
 const ui = useUiStore();
 const route = useRoute();
 
+let megaCloseTimeout = null;
+
+const clearMegaCloseTimeout = () => {
+    if (megaCloseTimeout) {
+        clearTimeout(megaCloseTimeout);
+        megaCloseTimeout = null;
+    }
+};
+
 const handleMegaEnter = (item) => {
+    clearMegaCloseTimeout();
+
     if (!item.columns) {
         ui.closeMegaMenu();
         return;
     }
+
     ui.setActiveMegaMenu(item);
 };
 
-const handleMegaLeave = () => {
-    ui.closeMegaMenu();
+const scheduleMegaClose = () => {
+    clearMegaCloseTimeout();
+    megaCloseTimeout = window.setTimeout(() => {
+        ui.closeMegaMenu();
+    }, 180);
 };
 
-const closeMegaMenu = () => ui.closeMegaMenu();
+const cancelMegaClose = () => {
+    clearMegaCloseTimeout();
+};
+
+const handleMegaLeave = () => {
+    scheduleMegaClose();
+};
+
+const closeMegaMenu = () => {
+    clearMegaCloseTimeout();
+    ui.closeMegaMenu();
+};
 const toggleMobileMenu = (force) => ui.toggleMobileMenu(force);
 const toggleCartDrawer = () => ui.toggleCartDrawer();
 
@@ -145,14 +176,14 @@ const activeMegaSection = computed(() => ui.activeMegaMenu);
 watch(
     () => route.fullPath,
     () => {
-        ui.closeMegaMenu();
+        closeMegaMenu();
         ui.toggleMobileMenu(false);
     }
 );
 
 const handleEscape = (event) => {
     if (event.key === 'Escape') {
-        ui.closeMegaMenu();
+        closeMegaMenu();
         ui.toggleMobileMenu(false);
     }
 };
@@ -163,6 +194,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     window.removeEventListener('keydown', handleEscape);
+    clearMegaCloseTimeout();
 });
 </script>
 
