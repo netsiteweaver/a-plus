@@ -63,13 +63,25 @@
                     v-for="item in primaryNavigation"
                     :key="item.label"
                     :to="item.to"
-                    class="relative flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-600 transition hover:text-sky-700"
+                    class="relative group flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-600 transition hover:text-sky-700"
                     @mouseenter="handleMegaEnter(item)"
                     @focusin="handleMegaEnter(item)"
                     @mouseleave="handleMegaLeave"
                 >
                     <span>{{ item.label }}</span>
-                    <span v-if="item.columns" class="text-xs text-slate-400">v</span>
+                    <svg
+                        v-if="item.columns"
+                        class="h-3 w-3 text-slate-400 transition duration-150 group-hover:-translate-y-0.5 group-hover:text-sky-600"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M4 6l4 4 4-4" />
+                    </svg>
                 </RouterLink>
                 <div class="flex-1"></div>
                 <RouterLink to="/category/deals" class="inline-flex items-center gap-2 rounded-full border border-sky-500/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-sky-600 transition hover:border-sky-500 hover:text-sky-700">
