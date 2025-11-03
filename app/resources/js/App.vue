@@ -92,7 +92,7 @@
 
         <footer class="border-t border-white/10 bg-slate-900/60">
             <div class="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-6 text-sm text-white/50 md:flex-row md:items-center md:justify-between">
-                <p>&copy; {{ new Date().getFullYear() }} Mega Electronics Blueprint.</p>
+                <p>&copy; {{ currentYear }} Mega Electronics Blueprint.</p>
                 <div class="flex flex-wrap items-center gap-3">
                     <span>Laravel 12</span>
                     <span>Vue 3</span>
@@ -105,5 +105,5 @@
 </template>
 
 <script setup>
-// Placeholder root component verifying the build pipeline.
+const currentYear = new Date().getFullYear();
 </script>
