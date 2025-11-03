@@ -23,7 +23,7 @@
                             <span v-if="product.compare_at_price" class="text-sm text-white/40 line-through">{{ formatCurrency(product.compare_at_price) }}</span>
                         </span>
                         <span class="inline-flex items-center gap-2 text-emerald-300">
-                            ★ {{ product.rating.toFixed(1) }}
+                            * {{ product.rating.toFixed(1) }}
                             <span class="text-white/40">({{ product.rating_count }} reviews)</span>
                         </span>
                         <span class="text-white/40">SKU {{ product.sku }}</span>
@@ -103,7 +103,7 @@
         <section v-if="relatedProducts.length" class="space-y-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-2xl font-semibold text-white">Recommended accessories</h2>
-                <RouterLink :to="'/category/' + route.params.slug" class="text-sm text-emerald-300 transition hover:text-emerald-200">View all →</RouterLink>
+                <RouterLink :to="'/category/' + route.params.slug" class="text-sm text-emerald-300 transition hover:text-emerald-200">View all -></RouterLink>
             </div>
             <ProductGrid :products="relatedProducts" dense />
         </section>

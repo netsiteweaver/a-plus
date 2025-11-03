@@ -4,7 +4,7 @@
             <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
                 <p class="flex items-center gap-2">
                     <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400"></span>
-                    Mega Electronics ? premium tech, next-day delivery in select cities.
+                    Mega Electronics - premium tech, next-day delivery in select cities.
                 </p>
                 <nav class="flex items-center gap-5">
                     <RouterLink
@@ -34,7 +34,7 @@
                     class="w-full rounded-full border border-white/10 bg-slate-900/70 px-5 py-2.5 text-sm text-white/80 placeholder:text-white/40 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/40"
                 />
                 <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-xs uppercase tracking-[0.2em] text-white/30">
-                    ?K
+                    CTRL+K
                 </span>
             </div>
 
@@ -44,10 +44,10 @@
                 </button>
                 <RouterLink to="/support" class="hidden text-sm transition hover:text-white md:block">Help</RouterLink>
                 <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 transition hover:border-emerald-400/40 hover:text-white" @click="toggleCartDrawer">
-                    <span class="text-lg">??</span>
+                    <span class="text-xs font-semibold uppercase tracking-[0.3em]">Cart</span>
                 </button>
                 <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 transition hover:border-emerald-400/40 hover:text-white" @click="toggleMobileMenu" aria-label="Toggle navigation">
-                    <span class="text-lg md:hidden">?</span>
+                    <span class="text-sm font-semibold uppercase tracking-[0.3em] md:hidden">Menu</span>
                 </button>
             </div>
         </div>
@@ -64,7 +64,7 @@
                     @mouseleave="handleMegaLeave"
                 >
                     <span>{{ item.label }}</span>
-                    <span v-if="item.columns" class="text-xs text-white/40">?</span>
+                    <span v-if="item.columns" class="text-xs text-white/40">v</span>
                 </RouterLink>
                 <div class="flex-1"></div>
                 <RouterLink to="/category/deals" class="inline-flex items-center gap-2 rounded-full border border-emerald-500/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300 transition hover:border-emerald-300 hover:text-emerald-200">

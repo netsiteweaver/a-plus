@@ -19,11 +19,11 @@
                             class="inline-flex items-center gap-2 rounded-full bg-emerald-400 px-6 py-3 font-semibold uppercase tracking-[0.28em] text-slate-950 transition hover:bg-emerald-300"
                         >
                             {{ hero.cta?.label ?? 'Shop now' }}
-                            <span>→</span>
+                            <span>></span>
                         </RouterLink>
-                        <RouterLink to="/services/installation" class="inline-flex items-center gap-2 text-white/70 transition hover:text-white">
-                            Concierge install
-                            <span class="text-xs">›</span>
+                <RouterLink to="/services/installation" class="inline-flex items-center gap-2 text-white/70 transition hover:text-white">
+                    Concierge install
+                    <span class="text-xs">></span>
                         </RouterLink>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                     <p class="text-xs uppercase tracking-[0.3em] text-white/40">Lightning deals</p>
                     <h2 class="text-2xl font-semibold text-white">Daily price drops</h2>
                 </div>
-                <RouterLink to="/category/deals" class="text-sm text-emerald-300 transition hover:text-emerald-200">View all deals →</RouterLink>
+                <RouterLink to="/category/deals" class="text-sm text-emerald-300 transition hover:text-emerald-200">View all deals -></RouterLink>
             </div>
 
             <div class="grid gap-6 md:grid-cols-2">
@@ -92,7 +92,7 @@
                         <p class="text-sm text-white/60">{{ category.description }}</p>
                         <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
                             Explore
-                            <span>→</span>
+                            <span>></span>
                         </span>
                     </div>
                 </RouterLink>
@@ -105,7 +105,7 @@
                     <p class="text-xs uppercase tracking-[0.3em] text-white/40">Trending now</p>
                     <h2 class="text-2xl font-semibold text-white">Most-loved devices</h2>
                 </div>
-                <RouterLink to="/category/most-loved" class="text-sm text-emerald-300 transition hover:text-emerald-200">See curated list →</RouterLink>
+                <RouterLink to="/category/most-loved" class="text-sm text-emerald-300 transition hover:text-emerald-200">See curated list -></RouterLink>
             </div>
             <ProductGrid :products="featuredProducts" />
         </section>

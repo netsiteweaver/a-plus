@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <p class="max-w-sm text-sm text-white/60">
-                    High-performance devices, smart living solutions, and concierge-grade support. Built with Laravel ? Vue ? Tailwind.
+                    High-performance devices, smart living solutions, and concierge-grade support. Built with Laravel + Vue + Tailwind.
                 </p>
                 <p class="text-xs text-white/40">&copy; {{ currentYear }} Mega Electronics. All rights reserved.</p>
             </div>
@@ -48,10 +48,10 @@
                             </button>
                         </div>
                     </form>
-                    <div class="flex items-center gap-4 text-lg text-white/50">
-                        <a href="#" class="transition hover:text-white" aria-label="Instagram">?</a>
-                        <a href="#" class="transition hover:text-white" aria-label="Twitter">?</a>
-                        <a href="#" class="transition hover:text-white" aria-label="YouTube">?</a>
+                    <div class="flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.25em] text-white/50">
+                        <a href="#" class="transition hover:text-white" aria-label="Instagram">IG</a>
+                        <a href="#" class="transition hover:text-white" aria-label="Twitter">TW</a>
+                        <a href="#" class="transition hover:text-white" aria-label="YouTube">YT</a>
                     </div>
                 </div>
             </div>

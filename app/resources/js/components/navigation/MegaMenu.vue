@@ -23,7 +23,7 @@
                                     @click.native="emitClose"
                                 >
                                     <span>{{ item.label }}</span>
-                                    <span class="text-xs text-white/30">?</span>
+                                    <span class="text-xs text-white/30">></span>
                                 </RouterLink>
                             </li>
                         </ul>
@@ -42,7 +42,7 @@
                         <p class="text-white/60">{{ section.hero.description }}</p>
                         <span class="inline-flex items-center gap-1 text-emerald-300">
                             Shop now
-                            <span class="text-xs">?</span>
+                            <span class="text-xs">></span>
                         </span>
                     </div>
                     <img

@@ -22,7 +22,7 @@
             <div class="flex items-start justify-between gap-4 text-sm text-white/60">
                 <p class="text-xs uppercase tracking-[0.25em] text-emerald-200/70">in stock</p>
                 <div class="flex items-center gap-1 text-xs text-white/40">
-                    <span>★</span>
+                    <span>*</span>
                     <span>{{ Number(product.rating ?? 0).toFixed(1) }}</span>
                     <span class="text-white/30">({{ product.rating_count ?? 0 }})</span>
                 </div>

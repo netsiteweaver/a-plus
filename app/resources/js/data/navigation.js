@@ -38,7 +38,7 @@ export const primaryNavigation = [
         hero: {
             eyebrow: 'Save up to 25%',
             title: 'Vision Pro Ultrabook 16',
-            description: '12th gen Intel? H-series, OLED 240Hz, LiquidCool X2 thermal design.',
+            description: '12th gen Intel H-series, OLED 240Hz, LiquidCool X2 thermal design.',
             to: '/product/vision-pro-ultrabook-16',
             image: 'https://images.unsplash.com/photo-1527430253228-e93688616381?auto=format&fit=crop&w=900&q=80',
         },

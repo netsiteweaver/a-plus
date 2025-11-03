@@ -63,7 +63,7 @@
                             Newest
                         </button>
                         <button class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70 transition hover:border-emerald-400/40 hover:text-emerald-200">
-                            Price · Low to high
+                            Price - Low to high
                         </button>
                     </div>
                     <span class="text-xs uppercase tracking-[0.25em] text-white/40">Compare (0)</span>

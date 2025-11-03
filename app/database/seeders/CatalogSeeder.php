@@ -77,7 +77,7 @@ class CatalogSeeder extends Seeder
             return Brand::factory()->create([
                 'name' => $name,
                 'slug' => Str::slug($name),
-                'meta_title' => $name . ' ? Mega Electronics',
+                'meta_title' => $name . ' - Mega Electronics',
             ]);
         });
     }
@@ -125,14 +125,14 @@ class CatalogSeeder extends Seeder
     {
         $attributeDefinitions = [
             'processor' => [
-                'Intel? Core? Ultra 9 185H',
-                'AMD Ryzen? 9 8945HX',
+                'Intel Core Ultra 9 185H',
+                'AMD Ryzen 9 8945HX',
                 'Apple M3 Max',
             ],
             'graphics' => [
-                'NVIDIA GeForce RTX? 4090 16GB',
-                'NVIDIA GeForce RTX? 4080 12GB',
-                'AMD Radeon? RX 7900M',
+                'NVIDIA GeForce RTX 4090 16GB',
+                'NVIDIA GeForce RTX 4080 12GB',
+                'AMD Radeon RX 7900M',
             ],
             'memory' => [
                 '32GB LPDDR5X',
