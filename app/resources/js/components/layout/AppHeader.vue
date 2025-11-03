@@ -4,7 +4,7 @@
             <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
                 <p class="flex items-center gap-2">
                     <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-sky-500"></span>
-                    Mega Electronics - premium tech, next-day delivery in select cities.
+                    Next-day delivery in selected cities.
                 </p>
                 <nav class="flex items-center gap-5">
                     <RouterLink
@@ -22,9 +22,13 @@
         <div class="mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
             <RouterLink to="/" class="flex items-center gap-3 text-lg font-semibold tracking-tight text-slate-800">
                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600">
-                    ME
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" fill="currentColor" opacity="0.2"/>
+                        <path d="M9.5 15l-2.5-2.5 1.41-1.41L9.5 12.17l4.59-4.58L15.5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <text x="7" y="17" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="currentColor">A+</text>
+                    </svg>
                 </span>
-                <span class="hidden sm:inline">Mega Electronics</span>
+                <span class="hidden sm:inline">{{ appName }}</span>
             </RouterLink>
 
             <div class="relative hidden flex-1 lg:block">
@@ -39,10 +43,10 @@
             </div>
 
             <div class="ml-auto flex items-center gap-3 text-slate-600">
-                <button class="hidden rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-sky-600 transition hover:border-sky-400 hover:text-sky-700 lg:inline-flex">
+                <!-- <button class="hidden rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-sky-600 transition hover:border-sky-400 hover:text-sky-700 lg:inline-flex">
                     member perks
-                </button>
-                <RouterLink to="/support" class="hidden text-sm transition hover:text-sky-700 md:block">Help</RouterLink>
+                </button> -->
+                <!-- <RouterLink to="/support" class="hidden text-sm transition hover:text-sky-700 md:block">Help</RouterLink> -->
                 <button class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] transition hover:border-sky-400 hover:text-sky-700" @click="toggleCartDrawer" aria-label="Toggle cart drawer">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M2.25 3h1.386a1.125 1.125 0 0 1 1.087.835l.383 1.437M7.5 14.25a3 3 0 1 1-6 0" />
@@ -130,6 +134,9 @@ import { useRoute } from 'vue-router';
 import MegaMenu from '@/components/navigation/MegaMenu.vue';
 import { primaryNavigation, utilityNavigation } from '@/data/navigation';
 import { useUiStore } from '@/stores/ui';
+
+// Get app name from environment variable
+const appName = import.meta.env.VITE_APP_NAME;
 
 const ui = useUiStore();
 const route = useRoute();

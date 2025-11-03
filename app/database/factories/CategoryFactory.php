@@ -26,7 +26,7 @@ class CategoryFactory extends Factory
             'status' => 'published',
             'position' => $this->faker->numberBetween(0, 100),
             'is_visible' => true,
-            'meta_title' => Str::title($name) . ' ? Mega Electronics',
+            'meta_title' => Str::title($name) . ' | ' . config('app.name'),
             'meta_description' => $this->faker->sentence(16),
             'data' => [
                 'accent' => $this->faker->words(2, true),

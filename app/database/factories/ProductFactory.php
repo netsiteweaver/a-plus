@@ -37,7 +37,7 @@ class ProductFactory extends Factory
             ],
             'status' => 'published',
             'published_at' => now()->subDays($this->faker->numberBetween(1, 120)),
-            'meta_title' => Str::title($name) . ' ? Mega Electronics',
+            'meta_title' => Str::title($name) . ' | ' . config('app.name'),
             'meta_description' => $this->faker->sentence(20),
         ];
     }

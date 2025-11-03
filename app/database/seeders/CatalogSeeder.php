@@ -77,7 +77,7 @@ class CatalogSeeder extends Seeder
             return Brand::factory()->create([
                 'name' => $name,
                 'slug' => Str::slug($name),
-                'meta_title' => $name . ' - Mega Electronics',
+                'meta_title' => $name . ' - ' . config('app.name'),
             ]);
         });
     }

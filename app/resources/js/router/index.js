@@ -40,10 +40,11 @@ const router = createRouter({
 });
 
 router.afterEach((to) => {
+    const appName = import.meta.env.VITE_APP_NAME;
     if (to.meta?.title) {
-        document.title = `${to.meta.title} ? Mega Electronics`;
+        document.title = `${to.meta.title} | ${appName}`;
     } else {
-        document.title = 'Mega Electronics';
+        document.title = appName;
     }
 });
 

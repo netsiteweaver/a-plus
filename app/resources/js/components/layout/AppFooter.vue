@@ -7,14 +7,14 @@
                         ME
                     </span>
                     <div>
-                        <p class="text-sm font-semibold tracking-tight">Mega Electronics</p>
-                        <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Since 2011</p>
+                        <p class="text-sm font-semibold tracking-tight">{{appName}}</p>
+                        <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Since 2000</p>
                     </div>
                 </div>
                 <p class="max-w-sm text-sm text-slate-500">
                     High-performance devices, smart living solutions, and concierge-grade support. Built with Laravel + Vue + Tailwind.
                 </p>
-                <p class="text-xs text-slate-400">&copy; {{ currentYear }} Mega Electronics. All rights reserved.</p>
+                <p class="text-xs text-slate-400">&copy; {{ currentYear }} {{appName}}. All rights reserved. Developed by <a target="_blank" href="https://www.netsiteweaver.com">Netsiteweaver Ltd</a></p>
             </div>
 
             <div class="grid flex-1 gap-8 text-sm text-slate-500 sm:grid-cols-2 md:grid-cols-3">
@@ -78,5 +78,7 @@
 </template>
 
 <script setup>
+// Get app name from environment variable
+const appName = import.meta.env.VITE_APP_NAME;
 const currentYear = new Date().getFullYear();
 </script>
