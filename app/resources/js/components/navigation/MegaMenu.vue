@@ -9,21 +9,21 @@
     >
         <div
             v-if="section"
-            class="absolute inset-x-0 top-full z-40 border-b border-white/10 bg-slate-900/95 py-10 text-slate-100 shadow-2xl shadow-emerald-900/20 backdrop-blur-xl"
+            class="absolute inset-x-0 top-full z-40 border-b border-slate-200 bg-white/95 py-10 text-slate-700 shadow-xl shadow-blue-200/40 backdrop-blur-lg"
         >
             <div class="mx-auto flex max-w-5xl gap-10 px-6">
                 <div class="grid flex-1 gap-8 md:grid-cols-3">
                     <div v-for="column in section.columns" :key="column.heading" class="space-y-4">
-                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{{ column.heading }}</p>
-                        <ul class="space-y-2 text-sm text-white/70">
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">{{ column.heading }}</p>
+                        <ul class="space-y-2 text-sm text-slate-600">
                             <li v-for="item in column.items" :key="item.to">
                                 <RouterLink
                                     :to="item.to"
-                                    class="inline-flex items-center gap-1 transition hover:text-white"
+                                    class="inline-flex items-center gap-1 transition hover:text-blue-600"
                                     @click.native="emitClose"
                                 >
                                     <span>{{ item.label }}</span>
-                                    <span class="text-xs text-white/30">></span>
+                                    <span class="text-xs text-slate-400">></span>
                                 </RouterLink>
                             </li>
                         </ul>
@@ -33,14 +33,14 @@
                 <RouterLink
                     v-if="section.hero"
                     :to="section.hero.to"
-                    class="hidden w-64 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-emerald-500/10 via-slate-900 to-slate-950 shadow-xl transition hover:border-emerald-400/40 md:flex"
+                    class="hidden w-64 overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-b from-blue-50 via-white to-blue-100 shadow-xl transition hover:border-blue-400/60 md:flex"
                     @click.native="emitClose"
                 >
                     <div class="flex flex-col gap-3 p-5 text-sm">
-                        <span class="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">{{ section.hero.eyebrow }}</span>
-                        <p class="text-lg font-semibold text-white">{{ section.hero.title }}</p>
-                        <p class="text-white/60">{{ section.hero.description }}</p>
-                        <span class="inline-flex items-center gap-1 text-emerald-300">
+                        <span class="text-xs font-semibold uppercase tracking-[0.25em] text-blue-600/90">{{ section.hero.eyebrow }}</span>
+                        <p class="text-lg font-semibold text-slate-900">{{ section.hero.title }}</p>
+                        <p class="text-slate-600">{{ section.hero.description }}</p>
+                        <span class="inline-flex items-center gap-1 text-blue-600">
                             Shop now
                             <span class="text-xs">></span>
                         </span>
