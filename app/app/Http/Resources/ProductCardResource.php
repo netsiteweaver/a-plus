@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 class ProductCardResource extends JsonResource
 {
@@ -11,11 +13,20 @@ class ProductCardResource extends JsonResource
         $primaryMedia = $this->media->sortBy('position')->first();
         $variant = $this->defaultVariant ?? $this->variants->sortBy('price')->first();
 
-        $metaItems = $this->attributeValues
-            ->loadMissing(['attribute', 'attributeValue'])
+        $attributeValues = $this->relationLoaded('attributeValues')
+            ? $this->attributeValues
+            : $this->attributeValues()->get();
+
+        if ($attributeValues instanceof EloquentCollection) {
+            $attributeValues->load('attribute', 'attributeValue');
+        } else {
+            $attributeValues = Collection::make($attributeValues);
+        }
+
+        $metaItems = $attributeValues
             ->take(3)
             ->map(function ($attributeValue) {
-                return $attributeValue->attributeValue->display_value ?? $attributeValue->value_text;
+                return optional($attributeValue->attributeValue)->display_value ?? $attributeValue->value_text;
             })
             ->filter()
             ->values()

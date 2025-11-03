@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 class ProductDetailResource extends JsonResource
 {
@@ -42,7 +44,17 @@ class ProductDetailResource extends JsonResource
             'display' => 'Display',
         ];
 
-        $this->attributeValues->loadMissing(['attribute', 'attributeValue'])->each(function ($value) use (&$groups, $mapping) {
+        $attributeValues = $this->relationLoaded('attributeValues')
+            ? $this->attributeValues
+            : $this->attributeValues()->get();
+
+        if ($attributeValues instanceof EloquentCollection) {
+            $attributeValues->load('attribute', 'attributeValue');
+        } else {
+            $attributeValues = Collection::make($attributeValues);
+        }
+
+        $attributeValues->each(function ($value) use (&$groups, $mapping) {
             $attribute = $value->attribute;
             if (! $attribute) {
                 return;
@@ -52,7 +64,7 @@ class ProductDetailResource extends JsonResource
 
             $groups[$group][] = [
                 'label' => $attribute->name,
-                'value' => $value->attributeValue->display_value ?? $value->value_text,
+                'value' => optional($value->attributeValue)->display_value ?? $value->value_text,
             ];
         });
 

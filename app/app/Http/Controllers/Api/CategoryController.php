@@ -46,11 +46,12 @@ class CategoryController extends Controller
             return [];
         }
 
+        $products->load('attributeValues.attribute', 'attributeValues.attributeValue');
+
         $filters = [];
 
         $attributeGroups = $products
-            ->flatMap(fn ($product) => $product->attributeValues)
-            ->loadMissing(['attribute', 'attributeValue'])
+            ->flatMap(fn ($product) => $product->attributeValues ?? collect())
             ->groupBy(fn ($value) => optional($value->attribute)->code)
             ->reject(fn ($values, $code) => $code === null);
 
