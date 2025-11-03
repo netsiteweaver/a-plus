@@ -15,11 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call(RbacSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Seed a default admin account for initial access if it doesn't already exist.
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Administrator',
+                'password' => 'password',
+            ],
+        );
+
+        if (! $admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
     }
 }
