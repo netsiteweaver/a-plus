@@ -1,0 +1,39 @@
+User-agent: *
+Disallow: /wp-content/uploads/wc-logs/
+Disallow: /wp-content/uploads/woocommerce_transient_files/
+Disallow: /wp-content/uploads/woocommerce_uploads/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+# START YOAST BLOCK
+# ---------------------------
+User-agent: *
+Disallow:
+
+Sitemap: https://woodmart.xtemos.com/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/handmade/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/magazine/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/megamarket/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/accessories/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/mega-electronics/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/test-payments/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/furniture2/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/plants/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/kids/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/games/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/pills/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/pottery/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/sass/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/organic-farm/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/vegetables/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/marketplace2/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/makeup/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/barbershop/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/t-shirts-prints/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/handmade-bags/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/pets/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/electronics-3/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/vinyls/sitemap_index.xml
+Sitemap: https://woodmart.xtemos.com/christmas-2/sitemap_index.xml
+# ---------------------------
+# END YOAST BLOCK
