@@ -55,8 +55,21 @@
                     </svg>
                     <span>Cart</span>
                 </button>
-                <button class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition hover:border-sky-400 hover:text-sky-700" @click="toggleMobileMenu" aria-label="Toggle navigation">
-                    <span class="text-sm font-semibold uppercase tracking-[0.3em] md:hidden">Menu</span>
+                <button
+                    type="button"
+                    class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition hover:border-sky-400 hover:text-sky-700"
+                    @click="toggleMobileMenu"
+                    :aria-expanded="ui.isMobileMenuOpen"
+                    aria-controls="mobile-navigation"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="sr-only">Toggle navigation</span>
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                        <path d="M4 7.25h16" />
+                        <path d="M4 12h16" />
+                        <path d="M4 16.75h16" />
+                    </svg>
+                    <span class="ml-2 text-sm font-semibold uppercase tracking-[0.3em] md:hidden">Menu</span>
                 </button>
             </div>
         </div>
@@ -93,6 +106,7 @@
         <transition name="fade">
             <div
                 v-if="ui.isMobileMenuOpen"
+                id="mobile-navigation"
                 class="fixed inset-0 z-50 flex flex-col bg-white/95 px-6 py-8 text-lg text-slate-700 backdrop-blur-sm"
             >
                 <div class="mb-6 flex items-center justify-between">
