@@ -18,7 +18,7 @@ class RbacSeeder extends Seeder
 
         $guard = config('permission.defaults.guard', 'web');
 
-        $permissions = [
+        $permissionNames = [
             'catalog.view',
             'catalog.manage',
             'orders.place',
@@ -32,9 +32,9 @@ class RbacSeeder extends Seeder
             'settings.manage',
         ];
 
-        foreach ($permissions as $permission) {
-            Permission::findOrCreate($permission, $guard);
-        }
+        $permissions = collect($permissionNames)->mapWithKeys(function (string $name) use ($guard) {
+            return [$name => Permission::findOrCreate($name, $guard)];
+        });
 
         $roles = [
             'customer' => [
@@ -57,12 +57,12 @@ class RbacSeeder extends Seeder
                 'promotions.manage',
                 'recommendations.manage',
             ],
-            'admin' => $permissions,
+            'admin' => $permissionNames,
         ];
 
         foreach ($roles as $roleName => $rolePermissions) {
             $role = Role::findOrCreate($roleName, $guard);
-            $role->syncPermissions($rolePermissions);
+            $role->syncPermissions($permissions->only($rolePermissions)->values());
         }
     }
 }
