@@ -36,6 +36,8 @@ class RbacSeeder extends Seeder
             return [$name => Permission::findOrCreate($name, $guard)];
         });
 
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
         $roles = [
             'customer' => [
                 'catalog.view',
