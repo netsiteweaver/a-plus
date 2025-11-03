@@ -64,7 +64,7 @@ class RbacSeeder extends Seeder
 
         foreach ($roles as $roleName => $rolePermissions) {
             $role = Role::findOrCreate($roleName, $guard);
-            $role->syncPermissions($permissions->only($rolePermissions)->values());
+            $role->syncPermissions($permissions->only($rolePermissions)->values()->all());
         }
     }
 }
