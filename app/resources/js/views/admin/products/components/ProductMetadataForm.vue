@@ -147,7 +147,7 @@
 </template>
 
 <script setup>
-import { watch, reactive, ref } from 'vue';
+import { watchEffect, reactive, ref } from 'vue';
 import { catalogApi } from '@/services/admin/catalog';
 
 const props = defineProps({
@@ -167,14 +167,15 @@ const form = reactive(initState(props.product));
 const saving = ref(false);
 const success = ref(false);
 
-watch(
-    () => props.product,
-    (next) => {
-        Object.assign(form, initState(next));
-        success.value = false;
-    },
-    { immediate: true }
-);
+watchEffect(() => {
+    const next = props.product;
+    if (! next) {
+        return;
+    }
+
+    Object.assign(form, initState(next));
+    success.value = false;
+});
 
 function initState(product) {
     return {

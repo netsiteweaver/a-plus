@@ -154,7 +154,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, watchEffect } from 'vue';
 
 const props = defineProps({
     title: {
@@ -179,26 +179,18 @@ const emit = defineEmits(['save', 'close']);
 
 const form = reactive(createInitialState(props.variant, props.options));
 
-watch(
-    () => props.variant,
-    (next) => {
-        Object.assign(form, createInitialState(next, props.options));
-    },
-    { immediate: true }
-);
+watchEffect(() => {
+    Object.assign(form, createInitialState(props.variant, props.options));
+});
 
-watch(
-    () => props.options,
-    () => {
-        const optionIds = Object.keys(form.option_value_ids);
-        props.options.forEach((option) => {
-            if (!optionIds.includes(String(option.id))) {
-                form.option_value_ids[option.id] = '';
-            }
-        });
-    },
-    { immediate: true }
-);
+watchEffect(() => {
+    const optionIds = Object.keys(form.option_value_ids);
+    props.options.forEach((option) => {
+        if (! optionIds.includes(String(option.id))) {
+            form.option_value_ids[option.id] = '';
+        }
+    });
+});
 
 function createInitialState(variant, options) {
     const optionValues = {};

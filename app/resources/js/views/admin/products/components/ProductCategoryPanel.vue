@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, defineComponent, h } from 'vue';
+import { computed, defineComponent, h, ref, watch, watchEffect } from 'vue';
 import { catalogApi } from '@/services/admin/catalog';
 
 const props = defineProps({
@@ -93,15 +93,16 @@ const primaryLabel = computed(() => {
     return categoryMap.value.get(primary.value)?.name ?? 'Not set';
 });
 
-watch(
-    () => props.product,
-    (next) => {
-        selected.value = (next?.categories ?? []).map((category) => category.id);
-        primary.value = next?.categories?.find((category) => category.pivot?.is_primary)?.id ?? null;
-        success.value = false;
-    },
-    { immediate: true }
-);
+watchEffect(() => {
+    const next = props.product;
+    if (! next) {
+        return;
+    }
+
+    selected.value = (next.categories ?? []).map((category) => category.id);
+    primary.value = next.categories?.find((category) => category.pivot?.is_primary)?.id ?? null;
+    success.value = false;
+});
 
 watch(selected, (values) => {
     if (!values.includes(primary.value)) {
