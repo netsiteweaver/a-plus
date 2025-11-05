@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class ProductController extends AdminController
@@ -23,7 +24,7 @@ class ProductController extends AdminController
             'category_id' => ['nullable', 'integer', 'exists:categories,id'],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
             'include' => ['nullable', 'array'],
-            'include.*' => ['string', 'in:brand,categories,variants,options,media,attributeValues,relatedProducts'],
+            'include.*' => ['string', Rule::in(array_keys($this->availableIncludes()))],
         ]);
 
         $query = Product::query()
@@ -31,8 +32,9 @@ class ProductController extends AdminController
             ->withCount(['variants', 'media'])
             ->orderByDesc('updated_at');
 
-        if ($includes = $request->input('include', [])) {
-            $query->with($includes);
+        $includes = $this->normalizeIncludes($request->input('include', []));
+        if ($includes->isNotEmpty()) {
+            $query->with($includes->all());
         }
 
         $query->when($request->filled('search'), function ($q) use ($request) {
@@ -90,12 +92,12 @@ class ProductController extends AdminController
     {
         $request->validate([
             'include' => ['nullable', 'array'],
-            'include.*' => ['string', 'in:brand,categories,variants,options,media,attributeValues,relatedProducts'],
+            'include.*' => ['string', Rule::in(array_keys($this->availableIncludes()))],
         ]);
 
-        $includes = $request->input('include', []);
-        if ($includes) {
-            $product->load($includes);
+        $includes = $this->normalizeIncludes($request->input('include', []));
+        if ($includes->isNotEmpty()) {
+            $product->load($includes->all());
         }
 
         $product->loadMissing(['brand', 'categories']);
@@ -168,5 +170,38 @@ class ProductController extends AdminController
             ->all();
 
         $product->categories()->sync($syncData);
+    }
+
+    protected function availableIncludes(): array
+    {
+        return [
+            'brand' => 'brand',
+            'categories' => 'categories',
+            'variants' => 'variants',
+            'variants.option_values' => 'variants.optionValues',
+            'variants.optionValues' => 'variants.optionValues',
+            'options' => 'options',
+            'options.values' => 'options.values',
+            'media' => 'media',
+            'attribute_values' => 'attributeValues',
+            'attributeValues' => 'attributeValues',
+            'attributeValues.attribute' => 'attributeValues.attribute',
+            'attributeValues.attributeValue' => 'attributeValues.attributeValue',
+            'related_products' => 'relatedProducts',
+            'relatedProducts' => 'relatedProducts',
+            'relatedProducts.related' => 'relatedProducts.related',
+        ];
+    }
+
+    protected function normalizeIncludes(array $requested): \Illuminate\Support\Collection
+    {
+        $map = $this->availableIncludes();
+
+        return collect($requested)
+            ->map(fn ($key) => $map[$key] ?? null)
+            ->flatten()
+            ->filter()
+            ->unique()
+            ->values();
     }
 }
