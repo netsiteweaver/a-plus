@@ -222,7 +222,7 @@ const iconComponents = {
             );
         },
     }),
-});
+};
 
 function resolveIcon(name) {
     return iconComponents[name] ?? iconComponents.dashboard;
