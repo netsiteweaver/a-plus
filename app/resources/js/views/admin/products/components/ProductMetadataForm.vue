@@ -147,8 +147,9 @@
 </template>
 
 <script setup>
-import { watch, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { catalogApi } from '@/services/admin/catalog';
+import { useFormHydrator } from '@/composables/useFormHydrator';
 
 const props = defineProps({
     product: {
@@ -167,14 +168,10 @@ const form = reactive(initState(props.product));
 const saving = ref(false);
 const success = ref(false);
 
-watch(
-    () => props.product ? props.product.id : null,
-    (id) => {
-        if (! id) {
-            return;
-        }
-
-        Object.assign(form, initState(props.product));
+useFormHydrator(
+    () => props.product,
+    (product) => {
+        Object.assign(form, initState(product));
         success.value = false;
     },
     { immediate: true }
