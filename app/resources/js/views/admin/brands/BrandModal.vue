@@ -115,7 +115,8 @@ watch(
     () => props.brand,
     (next) => {
         Object.assign(form, createInitialState(next));
-    }
+    },
+    { immediate: true }
 );
 
 function createInitialState(brand) {

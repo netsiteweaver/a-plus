@@ -183,7 +183,8 @@ watch(
     () => props.variant,
     (next) => {
         Object.assign(form, createInitialState(next, props.options));
-    }
+    },
+    { immediate: true }
 );
 
 watch(
@@ -195,7 +196,8 @@ watch(
                 form.option_value_ids[option.id] = '';
             }
         });
-    }
+    },
+    { immediate: true }
 );
 
 function createInitialState(variant, options) {

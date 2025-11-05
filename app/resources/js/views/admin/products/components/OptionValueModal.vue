@@ -112,7 +112,8 @@ watch(
     () => props.value,
     (next) => {
         Object.assign(form, createInitialState(next));
-    }
+    },
+    { immediate: true }
 );
 
 function createInitialState(value) {

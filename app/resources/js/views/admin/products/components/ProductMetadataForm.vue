@@ -172,7 +172,8 @@ watch(
     (next) => {
         Object.assign(form, initState(next));
         success.value = false;
-    }
+    },
+    { immediate: true }
 );
 
 function initState(product) {

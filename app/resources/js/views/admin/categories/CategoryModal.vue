@@ -131,7 +131,8 @@ watch(
     () => props.category,
     (next) => {
         Object.assign(form, createInitialState(next));
-    }
+    },
+    { immediate: true }
 );
 
 const parentCandidates = computed(() => {

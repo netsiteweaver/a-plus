@@ -143,7 +143,8 @@ watch(
     () => props.media,
     (next) => {
         Object.assign(form, createInitialState(next));
-    }
+    },
+    { immediate: true }
 );
 
 function createInitialState(media) {
