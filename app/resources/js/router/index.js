@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 const routes = [
     {
@@ -7,6 +8,7 @@ const routes = [
         component: () => import('../views/HomeView.vue'),
         meta: {
             title: 'Home',
+            layout: 'default',
         },
     },
     {
@@ -15,6 +17,7 @@ const routes = [
         component: () => import('../views/CategoryView.vue'),
         meta: {
             title: 'Category',
+            layout: 'default',
         },
     },
     {
@@ -23,7 +26,83 @@ const routes = [
         component: () => import('../views/ProductView.vue'),
         meta: {
             title: 'Product',
+            layout: 'default',
         },
+    },
+    {
+        path: '/admin/login',
+        name: 'admin.login',
+        component: () => import('../views/admin/AdminLoginView.vue'),
+        meta: {
+            title: 'Admin Login',
+            layout: 'auth',
+            guestOnly: true,
+        },
+    },
+    {
+        path: '/admin',
+        redirect: { name: 'admin.dashboard' },
+        meta: {
+            requiresAuth: true,
+            requiresPermission: 'catalog.view',
+            layout: 'admin',
+            title: 'Admin',
+        },
+        children: [
+            {
+                path: 'dashboard',
+                name: 'admin.dashboard',
+                component: () => import('../views/admin/DashboardView.vue'),
+                meta: {
+                    title: 'Dashboard',
+                },
+            },
+            {
+                path: 'products',
+                name: 'admin.products.index',
+                component: () => import('../views/admin/products/ProductIndexView.vue'),
+                meta: {
+                    title: 'Products',
+                    requiresPermission: 'catalog.view',
+                },
+            },
+            {
+                path: 'products/:id',
+                name: 'admin.products.show',
+                component: () => import('../views/admin/products/ProductDetailView.vue'),
+                meta: {
+                    title: 'Product Details',
+                    requiresPermission: 'catalog.manage',
+                },
+            },
+            {
+                path: 'categories',
+                name: 'admin.categories.index',
+                component: () => import('../views/admin/categories/CategoryIndexView.vue'),
+                meta: {
+                    title: 'Categories',
+                    requiresPermission: 'catalog.view',
+                },
+            },
+            {
+                path: 'brands',
+                name: 'admin.brands.index',
+                component: () => import('../views/admin/brands/BrandIndexView.vue'),
+                meta: {
+                    title: 'Brands',
+                    requiresPermission: 'catalog.view',
+                },
+            },
+            {
+                path: 'attributes',
+                name: 'admin.attributes.index',
+                component: () => import('../views/admin/attributes/AttributeIndexView.vue'),
+                meta: {
+                    title: 'Attributes',
+                    requiresPermission: 'catalog.view',
+                },
+            },
+        ],
     },
     {
         path: '/:pathMatch(.*)*',
@@ -46,6 +125,32 @@ router.afterEach((to) => {
     } else {
         document.title = appName;
     }
+});
+
+router.beforeEach(async (to, from, next) => {
+    const auth = useAuthStore();
+
+    if (!auth.initialized) {
+        await auth.ensureSession();
+    }
+
+    if (to.meta?.requiresAuth && !auth.isAuthenticated) {
+        return next({
+            name: 'admin.login',
+            query: { redirect: to.fullPath },
+        });
+    }
+
+    if (to.meta?.guestOnly && auth.isAuthenticated) {
+        return next({ name: 'admin.dashboard' });
+    }
+
+    const requiredPermission = to.meta?.requiresPermission;
+    if (requiredPermission && !auth.hasPermission(requiredPermission)) {
+        return next({ name: 'admin.dashboard' });
+    }
+
+    return next();
 });
 
 export default router;
