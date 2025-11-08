@@ -26,7 +26,9 @@ export function onUnauthorized(callback) {
 
 export async function ensureCsrfCookie() {
     try {
-        await axios.get('/sanctum/csrf-cookie');
+        await axios.get('/sanctum/csrf-cookie', {
+            withCredentials: true,
+        });
     } catch (error) {
         console.error('Failed to initialize CSRF cookie', error);
         throw error;
