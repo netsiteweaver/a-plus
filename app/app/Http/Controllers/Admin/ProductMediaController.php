@@ -8,8 +8,10 @@ use App\Http\Resources\Admin\ProductMediaResource;
 use App\Models\Product;
 use App\Models\ProductMedia;
 use App\Models\ProductVariant;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class ProductMediaController extends AdminController
@@ -21,6 +23,44 @@ class ProductMediaController extends AdminController
         return ProductMediaResource::collection($media);
     }
 
+    public function upload(Request $request, Product $product): ProductMediaResource
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'image', 'max:10240'], // 10MB max
+            'product_variant_id' => ['nullable', 'integer', 'exists:product_variants,id'],
+            'is_primary' => ['sometimes', 'boolean'],
+            'alt_text' => ['nullable', 'string', 'max:255'],
+            'caption' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $this->ensureVariantBelongsToProduct($product, $request->input('product_variant_id'));
+
+        $file = $request->file('file');
+        $path = $file->store('products/' . $product->id, 'public');
+        
+        $media = $product->media()->create([
+            'type' => 'image',
+            'disk' => 'public',
+            'path' => $path,
+            'product_variant_id' => $request->input('product_variant_id'),
+            'is_primary' => $request->boolean('is_primary', false),
+            'position' => $product->media()->max('position') + 1,
+            'alt_text' => $request->input('alt_text'),
+            'caption' => $request->input('caption'),
+            'data' => [
+                'original_name' => $file->getClientOriginalName(),
+                'size' => $file->getSize(),
+                'mime_type' => $file->getMimeType(),
+            ],
+        ]);
+
+        if ($media->is_primary) {
+            $this->unsetOtherPrimaryMedia($product, $media->id);
+        }
+
+        return ProductMediaResource::make($media);
+    }
+
     public function store(StoreProductMediaRequest $request, Product $product): ProductMediaResource
     {
         $data = $request->validated();
@@ -29,9 +69,8 @@ class ProductMediaController extends AdminController
 
         $media = $product->media()->create([
             'type' => $data['type'] ?? 'image',
-            'disk' => $data['disk'] ?? null,
+            'disk' => $data['disk'] ?? 'public',
             'path' => $data['path'],
-            'url' => $data['url'] ?? null,
             'product_variant_id' => $data['product_variant_id'] ?? null,
             'is_primary' => $data['is_primary'] ?? false,
             'position' => $data['position'] ?? ($product->media()->max('position') + 1),

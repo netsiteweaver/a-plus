@@ -29,7 +29,9 @@ class AttributeResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
-            'values' => AttributeValueResource::collection($this->whenLoaded('values')->sortBy('value')),
+            'values' => $this->whenLoaded('values', function () {
+                return AttributeValueResource::collection($this->values->sortBy('value'));
+            }),
         ];
     }
 }

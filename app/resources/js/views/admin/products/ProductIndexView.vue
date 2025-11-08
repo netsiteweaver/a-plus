@@ -174,6 +174,7 @@
                         <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400 lg:col-span-2">
                             Name
                             <input
+                                ref="nameInput"
                                 v-model="createForm.name"
                                 required
                                 class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
@@ -287,7 +288,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { catalogApi } from '@/services/admin/catalog';
 
@@ -321,6 +322,7 @@ const createForm = reactive({
 });
 const createLoading = ref(false);
 const createError = ref('');
+const nameInput = ref(null);
 
 const pendingDeletion = ref(null);
 
@@ -330,6 +332,14 @@ const pageStart = computed(() => {
 
 const pageEnd = computed(() => {
     return pageStart.value + products.value.length - 1;
+});
+
+watch(showCreate, (isOpen) => {
+    if (isOpen) {
+        nextTick(() => {
+            nameInput.value?.focus();
+        });
+    }
 });
 
 onMounted(async () => {

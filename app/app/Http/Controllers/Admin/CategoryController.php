@@ -15,7 +15,7 @@ class CategoryController extends AdminController
     public function index(Request $request)
     {
         $request->validate([
-            'tree' => ['nullable', 'boolean'],
+            'tree' => ['nullable', 'in:true,false,1,0'],
             'parent_id' => ['nullable', 'integer', 'exists:categories,id'],
         ]);
 
@@ -29,7 +29,11 @@ class CategoryController extends AdminController
                 ->orderBy('position')
                 ->get();
 
-            return CategoryResource::collection($categories);
+            return CategoryResource::collection($categories)
+                ->response()
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
         }
 
         $categories = Category::query()
@@ -39,7 +43,11 @@ class CategoryController extends AdminController
             ->orderBy('position')
             ->paginate($request->integer('per_page', 15));
 
-        return CategoryResource::collection($categories);
+        return CategoryResource::collection($categories)
+            ->response()
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function store(StoreCategoryRequest $request): CategoryResource

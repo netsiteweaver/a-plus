@@ -15,9 +15,8 @@ class StoreProductMediaRequest extends FormRequest
     {
         return [
             'type' => ['sometimes', 'string', 'in:image,video,document'],
-            'disk' => ['nullable', 'string', 'max:120'],
+            'disk' => ['sometimes', 'string', 'max:120'],
             'path' => ['required', 'string', 'max:2048'],
-            'url' => ['nullable', 'url', 'max:2048'],
             'product_variant_id' => ['nullable', 'integer', 'exists:product_variants,id'],
             'is_primary' => ['sometimes', 'boolean'],
             'position' => ['sometimes', 'integer', 'min:0'],

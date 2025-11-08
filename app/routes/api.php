@@ -158,6 +158,10 @@ Route::prefix('admin')
             ->name('products.media.index')
             ->middleware('permission:catalog.view');
 
+        Route::post('products/{product}/media/upload', [AdminProductMediaController::class, 'upload'])
+            ->name('products.media.upload')
+            ->middleware('permission:catalog.manage');
+
         Route::post('products/{product}/media', [AdminProductMediaController::class, 'store'])
             ->name('products.media.store')
             ->middleware('permission:catalog.manage');

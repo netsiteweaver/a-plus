@@ -9,6 +9,7 @@
             />
 
             <main class="relative flex-1 overflow-y-auto p-6 lg:p-10">
+                <Breadcrumbs v-if="breadcrumbs.length" :items="breadcrumbs" class="mb-6" />
                 <slot />
             </main>
         </div>
@@ -19,8 +20,11 @@
 import { ref } from 'vue';
 import AdminSidebar from './AdminSidebar.vue';
 import AdminTopbar from './AdminTopbar.vue';
+import Breadcrumbs from '@/components/common/Breadcrumbs.vue';
+import { useBreadcrumbs } from '@/composables/useBreadcrumbs';
 
 const isSidebarCollapsed = ref(false);
+const { breadcrumbs } = useBreadcrumbs();
 
 function toggleSidebar(force) {
     if (typeof force === 'boolean') {

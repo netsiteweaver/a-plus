@@ -17,7 +17,12 @@ export const catalogApi = {
 
     // Categories
     listCategories(params = {}) {
-        return api.get('/admin/categories', { params });
+        return api.get('/admin/categories', { 
+            params: {
+                ...params,
+                _t: Date.now() // Cache buster
+            }
+        });
     },
     getCategory(id) {
         return api.get(`/admin/categories/${id}`);
@@ -93,6 +98,13 @@ export const catalogApi = {
     // Product Media
     listMedia(productId) {
         return api.get(`/admin/products/${productId}/media`);
+    },
+    uploadMedia(productId, formData) {
+        return api.post(`/admin/products/${productId}/media/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
     },
     createMedia(productId, payload) {
         return api.post(`/admin/products/${productId}/media`, payload);

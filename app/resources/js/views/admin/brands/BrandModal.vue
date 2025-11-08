@@ -14,6 +14,7 @@
                 <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
                     Name
                     <input
+                        ref="nameInput"
                         v-model="form.name"
                         required
                         class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
@@ -94,7 +95,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue';
+import { reactive, watch, ref, onMounted, nextTick } from 'vue';
 
 const props = defineProps({
     brand: {
@@ -110,14 +111,24 @@ const props = defineProps({
 const emit = defineEmits(['save', 'close']);
 
 const form = reactive(createInitialState(props.brand));
+const nameInput = ref(null);
 
 watch(
     () => props.brand,
     (next) => {
         Object.assign(form, createInitialState(next));
+        nextTick(() => {
+            nameInput.value?.focus();
+        });
     },
     { immediate: true }
 );
+
+onMounted(() => {
+    nextTick(() => {
+        nameInput.value?.focus();
+    });
+});
 
 function createInitialState(brand) {
     return {

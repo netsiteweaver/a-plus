@@ -25,9 +25,15 @@ class ProductDetailResource extends JsonResource
             'price' => $variant ? (float) $variant->price : null,
             'compare_at_price' => $variant && $variant->compare_at_price ? (float) $variant->compare_at_price : null,
             'sku' => $this->sku,
-            'media' => ProductMediaResource::collection($this->whenLoaded('media')->sortBy('position')),
-            'options' => ProductOptionResource::collection($this->whenLoaded('options')->sortBy('position')),
-            'variants' => ProductVariantResource::collection($this->whenLoaded('variants')->sortByDesc('is_default')),
+            'media' => $this->whenLoaded('media', function () {
+                return ProductMediaResource::collection($this->media->sortBy('position'));
+            }),
+            'options' => $this->whenLoaded('options', function () {
+                return ProductOptionResource::collection($this->options->sortBy('position'));
+            }),
+            'variants' => $this->whenLoaded('variants', function () {
+                return ProductVariantResource::collection($this->variants->sortByDesc('is_default'));
+            }),
             'specifications' => $this->buildSpecificationGroups(),
             'related_products' => ProductCardResource::collection($this->relatedProducts->map->related->filter()),
         ];

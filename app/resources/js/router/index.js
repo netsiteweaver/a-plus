@@ -55,6 +55,7 @@ const routes = [
                 component: () => import('../views/admin/DashboardView.vue'),
                 meta: {
                     title: 'Dashboard',
+                    breadcrumb: 'Dashboard',
                 },
             },
             {
@@ -63,6 +64,7 @@ const routes = [
                 component: () => import('../views/admin/products/ProductIndexView.vue'),
                 meta: {
                     title: 'Products',
+                    breadcrumb: 'Products',
                     requiresPermission: 'catalog.view',
                 },
             },
@@ -72,6 +74,7 @@ const routes = [
                 component: () => import('../views/admin/products/ProductDetailView.vue'),
                 meta: {
                     title: 'Product Details',
+                    breadcrumb: 'dynamic',
                     requiresPermission: 'catalog.manage',
                 },
             },
@@ -81,6 +84,7 @@ const routes = [
                 component: () => import('../views/admin/categories/CategoryIndexView.vue'),
                 meta: {
                     title: 'Categories',
+                    breadcrumb: 'Categories',
                     requiresPermission: 'catalog.view',
                 },
             },
@@ -90,6 +94,7 @@ const routes = [
                 component: () => import('../views/admin/brands/BrandIndexView.vue'),
                 meta: {
                     title: 'Brands',
+                    breadcrumb: 'Brands',
                     requiresPermission: 'catalog.view',
                 },
             },
@@ -99,6 +104,7 @@ const routes = [
                 component: () => import('../views/admin/attributes/AttributeIndexView.vue'),
                 meta: {
                     title: 'Attributes',
+                    breadcrumb: 'Attributes',
                     requiresPermission: 'catalog.view',
                 },
             },

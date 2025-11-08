@@ -29,15 +29,35 @@ class UpdateCategoryRequest extends FormRequest
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string'],
             'data' => ['nullable', 'array'],
+            'tree' => ['sometimes', 'boolean'], // Allow but ignore tree parameter
         ];
     }
 
     protected function prepareForValidation(): void
     {
+        // Remove 'tree' parameter if present (it's for GET queries only)
+        if ($this->has('tree')) {
+            $data = $this->all();
+            unset($data['tree']);
+            $this->replace($data);
+        }
+        
         if (! $this->filled('slug') && $this->filled('name')) {
             $this->merge([
                 'slug' => str($this->input('name'))->slug()->toString(),
             ]);
         }
+    }
+
+    public function validated($key = null, $default = null)
+    {
+        $validated = parent::validated($key, $default);
+        
+        // Remove 'tree' from validated data as it's only for querying
+        if (is_array($validated)) {
+            unset($validated['tree']);
+        }
+        
+        return $validated;
     }
 }

@@ -31,7 +31,7 @@
                     <tbody class="divide-y divide-slate-100">
                         <CategoryRow
                             v-for="node in categories"
-                            :key="node.id"
+                            :key="`${node.id}-${node.updated_at}`"
                             :node="node"
                             :depth="0"
                             @edit="openModal"
@@ -193,6 +193,7 @@ const CategoryRow = defineComponent({
             props.node.children.forEach((child) => {
                 rows.push(
                     h(CategoryRow, {
+                        key: `${child.id}-${child.updated_at}`,
                         node: child,
                         depth: props.depth + 1,
                         onEdit: (value) => emit('edit', value),

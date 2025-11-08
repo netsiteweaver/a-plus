@@ -78,6 +78,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { catalogApi } from '@/services/admin/catalog';
+import { useBreadcrumbs } from '@/composables/useBreadcrumbs';
 import ProductMetadataForm from './components/ProductMetadataForm.vue';
 import ProductCategoryPanel from './components/ProductCategoryPanel.vue';
 import ProductVariantsPanel from './components/ProductVariantsPanel.vue';
@@ -87,6 +88,7 @@ import ProductAttributesPanel from './components/ProductAttributesPanel.vue';
 import ProductRelatedPanel from './components/ProductRelatedPanel.vue';
 
 const route = useRoute();
+const { setDynamicBreadcrumb } = useBreadcrumbs();
 
 const loading = ref(true);
 const product = ref(null);
@@ -109,6 +111,11 @@ async function refreshProduct() {
             include: ['brand', 'categories', 'variants.option_values', 'options.values', 'media', 'attributeValues.attribute', 'attributeValues.attributeValue', 'relatedProducts.related'],
         });
         product.value = normalizeProduct(response.data?.data ?? response.data);
+        
+        // Update breadcrumb with product name
+        if (product.value?.name) {
+            setDynamicBreadcrumb(product.value.name);
+        }
     } catch (err) {
         error.value = err.response?.data?.message ?? 'Failed to load product.';
     } finally {

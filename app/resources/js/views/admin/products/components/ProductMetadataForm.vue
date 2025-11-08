@@ -12,6 +12,7 @@
             <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400 lg:col-span-2">
                 Name
                 <input
+                    ref="nameInput"
                     v-model="form.name"
                     required
                     class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
@@ -147,7 +148,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted, nextTick } from 'vue';
 import { catalogApi } from '@/services/admin/catalog';
 import { useFormHydrator } from '@/composables/useFormHydrator';
 
@@ -167,6 +168,7 @@ const emit = defineEmits(['updated']);
 const form = reactive(initState(props.product));
 const saving = ref(false);
 const success = ref(false);
+const nameInput = ref(null);
 
 useFormHydrator(
     () => props.product,
@@ -176,6 +178,12 @@ useFormHydrator(
     },
     { immediate: true }
 );
+
+onMounted(() => {
+    nextTick(() => {
+        nameInput.value?.focus();
+    });
+});
 
 function initState(product) {
     return {
