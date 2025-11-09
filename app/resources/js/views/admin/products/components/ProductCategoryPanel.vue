@@ -8,6 +8,10 @@
             <span v-if="success" class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-600">Saved</span>
         </header>
 
+        <div v-if="errorMessage" class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            {{ errorMessage }}
+        </div>
+
         <div class="grid gap-6 lg:grid-cols-[2fr_1fr]">
             <div class="space-y-4">
                 <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Available categories</p>
@@ -73,6 +77,7 @@ const selected = ref([]);
 const primary = ref(null);
 const saving = ref(false);
 const success = ref(false);
+const errorMessage = ref('');
 
 const categoryMap = computed(() => {
     const map = new Map();
@@ -113,6 +118,7 @@ watch(selected, (values) => {
 async function save() {
     saving.value = true;
     success.value = false;
+    errorMessage.value = '';
 
     try {
         await catalogApi.updateProduct(props.product.id, {
@@ -122,6 +128,14 @@ async function save() {
 
         success.value = true;
         emit('updated');
+    } catch (error) {
+        console.error('Category update error:', error);
+        
+        if (error.response && error.response.status === 422) {
+            errorMessage.value = error.response.data.message || 'Validation failed. Please check your category selection.';
+        } else {
+            errorMessage.value = error.response?.data?.message || 'Failed to update categories. Please try again.';
+        }
     } finally {
         saving.value = false;
     }

@@ -8,6 +8,10 @@
             <span v-if="success" class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-600">Saved</span>
         </header>
 
+        <div v-if="errorMessage" class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            {{ errorMessage }}
+        </div>
+
         <form class="grid gap-4 lg:grid-cols-2" @submit.prevent="save">
             <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400 lg:col-span-2">
                 Name
@@ -15,27 +19,39 @@
                     ref="nameInput"
                     v-model="form.name"
                     required
-                    class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
+                    :class="[
+                        'rounded-xl border px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2',
+                        errors.name ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-slate-200 focus:border-sky-400 focus:ring-sky-100'
+                    ]"
                     placeholder="Product name"
                 />
+                <span v-if="errors.name" class="text-xs text-red-600">{{ errors.name }}</span>
             </label>
 
             <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
                 Slug
                 <input
                     v-model="form.slug"
-                    class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
+                    :class="[
+                        'rounded-xl border px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2',
+                        errors.slug ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-slate-200 focus:border-sky-400 focus:ring-sky-100'
+                    ]"
                     placeholder="product-slug"
                 />
+                <span v-if="errors.slug" class="text-xs text-red-600">{{ errors.slug }}</span>
             </label>
 
             <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
                 SKU
                 <input
                     v-model="form.sku"
-                    class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
+                    :class="[
+                        'rounded-xl border px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2',
+                        errors.sku ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-slate-200 focus:border-sky-400 focus:ring-sky-100'
+                    ]"
                     placeholder="SKU"
                 />
+                <span v-if="errors.sku" class="text-xs text-red-600">{{ errors.sku }}</span>
             </label>
 
             <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
@@ -168,6 +184,8 @@ const emit = defineEmits(['updated']);
 const form = reactive(initState(props.product));
 const saving = ref(false);
 const success = ref(false);
+const errorMessage = ref('');
+const errors = reactive({});
 const nameInput = ref(null);
 
 useFormHydrator(
@@ -204,11 +222,15 @@ function initState(product) {
 function reset() {
     Object.assign(form, initState(props.product));
     success.value = false;
+    errorMessage.value = '';
+    Object.keys(errors).forEach(key => delete errors[key]);
 }
 
 async function save() {
     saving.value = true;
     success.value = false;
+    errorMessage.value = '';
+    Object.keys(errors).forEach(key => delete errors[key]);
 
     try {
         await catalogApi.updateProduct(props.product.id, {
@@ -219,6 +241,21 @@ async function save() {
 
         success.value = true;
         emit('updated');
+    } catch (error) {
+        console.error('Product update error:', error);
+        
+        if (error.response && error.response.status === 422) {
+            // Handle validation errors
+            const validationErrors = error.response.data.errors || {};
+            Object.keys(validationErrors).forEach(key => {
+                errors[key] = Array.isArray(validationErrors[key]) 
+                    ? validationErrors[key][0] 
+                    : validationErrors[key];
+            });
+            errorMessage.value = error.response.data.message || 'Validation failed. Please check the form fields.';
+        } else {
+            errorMessage.value = error.response?.data?.message || 'Failed to update product. Please try again.';
+        }
     } finally {
         saving.value = false;
     }

@@ -100,7 +100,11 @@ const attributes = ref([]);
 const relatedPool = ref([]);
 
 onMounted(async () => {
-    await Promise.all([refreshProduct(), loadBrands(), loadCategories(), loadAttributes(), loadRelatedPool()]);
+    try {
+        await Promise.all([refreshProduct(), loadBrands(), loadCategories(), loadAttributes(), loadRelatedPool()]);
+    } catch (err) {
+        console.error('Error loading product detail page:', err);
+    }
 });
 
 async function refreshProduct() {
@@ -124,24 +128,46 @@ async function refreshProduct() {
 }
 
 async function loadBrands() {
-    const response = await catalogApi.listBrands({ per_page: 100 });
-    brands.value = response.data?.data ?? [];
+    try {
+        const response = await catalogApi.listBrands({ per_page: 100 });
+        brands.value = response.data?.data ?? [];
+    } catch (err) {
+        console.error('Error loading brands:', err);
+    }
 }
 
 async function loadCategories() {
-    const response = await catalogApi.listCategories({ tree: true });
-    categoryTree.value = response.data?.data ?? response.data ?? [];
+    try {
+        const response = await catalogApi.listCategories({ tree: true });
+        categoryTree.value = response.data?.data ?? response.data ?? [];
+    } catch (err) {
+        console.error('Error loading categories:', err);
+    }
 }
 
 async function loadAttributes() {
-    const response = await catalogApi.listAttributes({ per_page: 200, include_values: true });
-    attributes.value = response.data?.data ?? [];
+    try {
+        const response = await catalogApi.listAttributes({ per_page: 200, include_values: true });
+        attributes.value = response.data?.data ?? [];
+    } catch (err) {
+        console.error('Error loading attributes:', err);
+        if (err.response?.status === 422) {
+            console.error('Validation error details:', err.response?.data);
+        }
+    }
 }
 
 async function loadRelatedPool() {
-    const response = await catalogApi.listProducts({ per_page: 100, include: ['brand'] });
-    const items = response.data?.data ?? [];
-    relatedPool.value = items.filter((item) => item.id !== product.value?.id);
+    try {
+        const response = await catalogApi.listProducts({ per_page: 100, include: ['brand'] });
+        const items = response.data?.data ?? [];
+        relatedPool.value = items.filter((item) => item.id !== product.value?.id);
+    } catch (err) {
+        console.error('Error loading related products pool:', err);
+        if (err.response?.status === 422) {
+            console.error('Validation error details:', err.response?.data);
+        }
+    }
 }
 
 function normalizeProduct(raw) {
