@@ -116,11 +116,14 @@ async function refreshProduct() {
         });
         product.value = normalizeProduct(response.data?.data ?? response.data);
         
+        console.log('Product loaded:', product.value);
+        
         // Update breadcrumb with product name
         if (product.value?.name) {
             setDynamicBreadcrumb(product.value.name);
         }
     } catch (err) {
+        console.error('Error loading product:', err);
         error.value = err.response?.data?.message ?? 'Failed to load product.';
     } finally {
         loading.value = false;
