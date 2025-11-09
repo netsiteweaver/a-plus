@@ -1,7 +1,22 @@
 <template>
+    <!-- Mobile overlay backdrop -->
+    <transition name="fade">
+        <div
+            v-if="isMobileMenuOpen"
+            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm lg:hidden"
+            @click="closeMobileMenu"
+        ></div>
+    </transition>
+
+    <!-- Sidebar -->
     <aside
-        class="hidden border-r border-slate-200 bg-white transition-all duration-200 lg:block"
-        :class="collapsed ? 'w-20' : 'w-72'"
+        class="fixed inset-y-0 left-0 z-50 w-72 border-r border-slate-200 bg-white transition-transform duration-300 lg:static lg:z-auto lg:transition-all"
+        :class="{
+            'translate-x-0': isMobileMenuOpen,
+            '-translate-x-full lg:translate-x-0': !isMobileMenuOpen,
+            'lg:w-20': collapsed,
+            'lg:w-72': !collapsed
+        }"
     >
         <div class="flex h-16 items-center gap-3 border-b border-slate-200 px-6">
             <div class="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600">
@@ -17,11 +32,11 @@
             <button
                 type="button"
                 class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 lg:hidden"
-                @click="$emit('toggle', !collapsed)"
+                @click="closeMobileMenu"
             >
-                <span>Toggle Menu</span>
+                <span>Close Menu</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
             </button>
 
@@ -36,6 +51,7 @@
                     :to="item.to"
                     class="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition"
                     :class="isActive(item.to) ? 'bg-sky-50 text-sky-700' : 'hover:bg-slate-100 hover:text-slate-900'"
+                    @click="closeMobileMenu"
                 >
                     <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-500 group-hover:bg-sky-100 group-hover:text-sky-600">
                         <component :is="resolveIcon(item.icon)" class="h-5 w-5" />
@@ -51,14 +67,24 @@
 import { computed, defineComponent, h } from 'vue';
 import { useRoute } from 'vue-router';
 
-defineProps({
+const props = defineProps({
     collapsed: {
+        type: Boolean,
+        default: false,
+    },
+    isMobileMenuOpen: {
         type: Boolean,
         default: false,
     },
 });
 
+const emit = defineEmits(['toggle', 'close-mobile-menu']);
+
 const route = useRoute();
+
+function closeMobileMenu() {
+    emit('close-mobile-menu');
+}
 
 const sections = computed(() => [
     {
@@ -228,3 +254,15 @@ function resolveIcon(name) {
     return iconComponents[name] ?? iconComponents.dashboard;
 }
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

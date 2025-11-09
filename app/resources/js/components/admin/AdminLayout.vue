@@ -1,11 +1,16 @@
 <template>
     <div class="flex min-h-screen bg-slate-100 text-slate-900">
-        <AdminSidebar :collapsed="isSidebarCollapsed" @toggle="toggleSidebar" />
+        <AdminSidebar 
+            :collapsed="isSidebarCollapsed" 
+            :is-mobile-menu-open="isMobileMenuOpen"
+            @toggle="toggleSidebar"
+            @close-mobile-menu="closeMobileMenu"
+        />
 
         <div class="flex flex-1 flex-col">
             <AdminTopbar
                 :collapsed="isSidebarCollapsed"
-                @toggle-sidebar="toggleSidebar"
+                @toggle-sidebar="toggleMobileMenu"
             />
 
             <main class="relative flex-1 overflow-y-auto p-6 lg:p-10">
@@ -24,6 +29,7 @@ import Breadcrumbs from '@/components/common/Breadcrumbs.vue';
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs';
 
 const isSidebarCollapsed = ref(false);
+const isMobileMenuOpen = ref(false);
 const { breadcrumbs } = useBreadcrumbs();
 
 function toggleSidebar(force) {
@@ -33,5 +39,13 @@ function toggleSidebar(force) {
     }
 
     isSidebarCollapsed.value = !isSidebarCollapsed.value;
+}
+
+function toggleMobileMenu() {
+    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+}
+
+function closeMobileMenu() {
+    isMobileMenuOpen.value = false;
 }
 </script>
