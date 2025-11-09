@@ -63,7 +63,11 @@ export const useConfigStore = defineStore('config', {
         promoBannerText: (state) => state.settings.branding?.promo_banner_text || '',
 
         // Navigation
-        primaryNavigation: (state) => state.navigation.primary?.items || [],
+        primaryNavigation: (state) => {
+            const items = state.navigation.primary?.items || [];
+            console.log('[Navigation Getter] primaryNavigation:', items.length, 'items');
+            return items;
+        },
         utilityNavigation: (state) => state.navigation.utility?.items || [],
         footerNavigation: (state) => state.navigation.footer?.items || [],
 
@@ -94,6 +98,8 @@ export const useConfigStore = defineStore('config', {
             this.loading.navigation = true;
             try {
                 const { data } = await axios.get(`/api/config/navigation/${location}`);
+                console.log(`[Navigation] Loaded ${location}:`, data);
+                console.log(`[Navigation] Items count:`, data.items?.length || 0);
                 this.navigation[location] = data;
                 this.loaded.navigation[location] = true;
             } catch (error) {

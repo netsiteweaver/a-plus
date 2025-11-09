@@ -155,6 +155,11 @@ const {
 } = useSettings();
 const route = useRoute();
 
+// Debug navigation loading
+console.log('[AppHeader] Component loaded');
+console.log('[AppHeader] primaryNavigation type:', typeof primaryNavigation);
+console.log('[AppHeader] primaryNavigation value:', primaryNavigation.value);
+
 let megaCloseTimeout = null;
 
 const clearMegaCloseTimeout = () => {

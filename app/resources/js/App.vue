@@ -30,6 +30,8 @@ const layoutComponent = computed(() => {
 
 // Initialize configuration on app mount
 onMounted(async () => {
+    console.log('[App] Initializing config store...');
     await configStore.initializeApp();
+    console.log('[App] Config store initialized!');
 });
 </script>

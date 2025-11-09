@@ -55,7 +55,9 @@ class ConfigController extends Controller
      */
     private function formatNavigationItems($items)
     {
-        return $items->map(function ($item) {
+        return $items->filter(function ($item) {
+            return $item->is_active;
+        })->map(function ($item) {
             $formatted = [
                 'label' => $item->label,
                 'to' => $item->url,  // Use 'to' for Vue Router compatibility
@@ -88,6 +90,6 @@ class ConfigController extends Controller
             }
 
             return $formatted;
-        });
+        })->values();
     }
 }
