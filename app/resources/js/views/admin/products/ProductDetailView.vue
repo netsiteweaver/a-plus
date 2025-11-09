@@ -115,16 +115,21 @@ async function refreshProduct() {
             include: ['brand', 'categories', 'variants.option_values', 'options.values', 'media', 'attributeValues.attribute', 'attributeValues.attributeValue', 'relatedProducts.related'],
         });
         
-        console.log('Raw API response:', response);
-        console.log('Response data:', response.data);
-        console.log('Response data.data:', response.data?.data);
-        
-        const rawProduct = response.data?.data ?? response.data;
-        console.log('Raw product before normalize:', rawProduct);
+        // Laravel API resources wrap data in { data: {...} }
+        // But check both locations to be safe
+        let rawProduct;
+        if (response.data?.data && typeof response.data.data === 'object' && response.data.data.id) {
+            // Wrapped in data key and has an id (is a product)
+            rawProduct = response.data.data;
+        } else if (response.data && response.data.id) {
+            // Direct response, not wrapped
+            rawProduct = response.data;
+        } else {
+            console.error('Unexpected response structure:', response.data);
+            throw new Error('Invalid response structure');
+        }
         
         product.value = normalizeProduct(rawProduct);
-        
-        console.log('Product after normalize:', product.value);
         
         // Update breadcrumb with product name
         if (product.value?.name) {
