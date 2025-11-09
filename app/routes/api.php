@@ -66,6 +66,14 @@ Route::prefix('admin')
             ->name('brands.destroy')
             ->middleware('permission:catalog.manage');
 
+        Route::post('brands/{brand}/logo', [AdminBrandController::class, 'uploadLogo'])
+            ->name('brands.logo.upload')
+            ->middleware('permission:catalog.manage');
+
+        Route::delete('brands/{brand}/logo', [AdminBrandController::class, 'deleteLogo'])
+            ->name('brands.logo.delete')
+            ->middleware('permission:catalog.manage');
+
         Route::get('categories', [AdminCategoryController::class, 'index'])
             ->name('categories.index')
             ->middleware('permission:catalog.view');

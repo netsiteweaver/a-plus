@@ -39,14 +39,14 @@
                     />
                 </label>
 
-                <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                    Logo URL
-                    <input
-                        v-model="form.logo_url"
-                        type="url"
-                        class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
-                    />
-                </label>
+                <ImageUpload
+                    ref="imageUpload"
+                    v-model="form.logo_url"
+                    label="Brand Logo"
+                    help-text="Upload a logo image for this brand (JPG, PNG, SVG, or WEBP, max 2MB)"
+                    @upload="handleLogoUpload"
+                    @delete="handleLogoDelete"
+                />
 
                 <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
                     Description
@@ -96,6 +96,8 @@
 
 <script setup>
 import { reactive, watch, ref, onMounted, nextTick } from 'vue';
+import { api } from '@/services/http';
+import ImageUpload from '@/components/admin/ImageUpload.vue';
 
 const props = defineProps({
     brand: {
@@ -108,17 +110,21 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['save', 'close']);
+const emit = defineEmits(['save', 'close', 'refresh']);
 
 const form = reactive(createInitialState(props.brand));
 const nameInput = ref(null);
+const imageUpload = ref(null);
+const pendingLogoFile = ref(null);
 
 watch(
     () => props.brand,
     (next) => {
         Object.assign(form, createInitialState(next));
+        pendingLogoFile.value = null;
         nextTick(() => {
             nameInput.value?.focus();
+            imageUpload.value?.clearPreview();
         });
     },
     { immediate: true }
@@ -141,14 +147,61 @@ function createInitialState(brand) {
     };
 }
 
-function submit() {
-    emit('save', {
+async function handleLogoUpload(file) {
+    // If editing existing brand, upload immediately
+    if (props.brand?.id) {
+        try {
+            imageUpload.value?.setUploading(true);
+
+            const formData = new FormData();
+            formData.append('logo', file);
+
+            const response = await api.post(`/admin/brands/${props.brand.id}/logo`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            form.logo_url = response.data.logo_url;
+            emit('refresh');
+        } catch (error) {
+            console.error('Failed to upload logo:', error);
+            imageUpload.value?.setError(error.response?.data?.message || 'Failed to upload logo');
+        } finally {
+            imageUpload.value?.setUploading(false);
+        }
+    } else {
+        // For new brands, store file to upload after brand creation
+        pendingLogoFile.value = file;
+    }
+}
+
+async function handleLogoDelete() {
+    if (props.brand?.id) {
+        try {
+            await api.delete(`/admin/brands/${props.brand.id}/logo`);
+            form.logo_url = null;
+            emit('refresh');
+        } catch (error) {
+            console.error('Failed to delete logo:', error);
+            imageUpload.value?.setError(error.response?.data?.message || 'Failed to delete logo');
+        }
+    } else {
+        pendingLogoFile.value = null;
+        form.logo_url = null;
+    }
+}
+
+async function submit() {
+    const brandData = {
         name: form.name,
         slug: form.slug || null,
         website_url: form.website_url || null,
         logo_url: form.logo_url || null,
         description: form.description || null,
         is_active: form.is_active,
-    });
+    };
+
+    emit('save', brandData, pendingLogoFile.value);
 }
 </script>
