@@ -19,6 +19,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CatalogSeeder::class);
 
+        // Seed configuration system
+        $this->call(SettingsSeeder::class);
+        $this->call(NavigationSeeder::class);
+        $this->call(ContentBlockSeeder::class);
+        $this->call(PageSeeder::class);
+
         // Seed a default admin account for initial access if it doesn't already exist.
         $admin = User::firstOrCreate(
             ['email' => 'admin@example.com'],

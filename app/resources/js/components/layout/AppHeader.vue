@@ -1,12 +1,10 @@
 <template>
     <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 text-slate-700 backdrop-blur-xl">
-        <div class="hidden border-b border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 text-xs text-slate-700 md:block">
+        <div v-if="showPromoBanner" class="hidden border-b border-sky-100 bg-sky-50/90 text-xs text-slate-600 md:block">
             <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
-                <p class="flex items-center gap-2 font-semibold text-green-700">
-                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M1 1.75A.75.75 0 011.75 1h1.628a1.75 1.75 0 011.734 1.51L5.18 3a65.25 65.25 0 0113.36 1.412.75.75 0 01.58.875 48.645 48.645 0 01-1.618 6.2.75.75 0 01-.712.513H6a2.503 2.503 0 00-2.292 1.5H17.25a.75.75 0 010 1.5H2.76a.75.75 0 01-.748-.807 4.002 4.002 0 012.716-3.486L3.626 2.716a.25.25 0 00-.248-.216H1.75A.75.75 0 011 1.75zM6 17.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15.5 19a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                    </svg>
-                    Free shipping on orders over $50
+                <p class="flex items-center gap-2">
+                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-sky-500"></span>
+                    {{ promoBannerText }}
                 </p>
                 <nav class="flex items-center gap-5">
                     <RouterLink
@@ -30,7 +28,7 @@
                         <text x="7" y="17" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="currentColor">A+</text>
                     </svg>
                 </span>
-                <span class="hidden sm:inline">{{ appName }}</span>
+                <span class="hidden sm:inline">{{ companyName }}</span>
             </RouterLink>
 
             <div class="relative hidden flex-1 lg:block">
@@ -143,13 +141,18 @@
 import { computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import MegaMenu from '@/components/navigation/MegaMenu.vue';
-import { primaryNavigation, utilityNavigation } from '@/data/navigation';
 import { useUiStore } from '@/stores/ui';
-
-// Get app name from environment variable
-const appName = import.meta.env.VITE_APP_NAME;
+import { useSettings } from '@/composables/useSettings';
 
 const ui = useUiStore();
+const {
+    companyName,
+    companyLogo,
+    showPromoBanner,
+    promoBannerText,
+    primaryNavigation,
+    utilityNavigation
+} = useSettings();
 const route = useRoute();
 
 let megaCloseTimeout = null;

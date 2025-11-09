@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CatalogHomeController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ConfigController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Admin\AttributeController as AdminAttributeController;
 use App\Http\Controllers\Admin\AttributeValueController as AdminAttributeValueController;
@@ -14,6 +15,10 @@ use App\Http\Controllers\Admin\ProductMediaController as AdminProductMediaContro
 use App\Http\Controllers\Admin\ProductVariantController as AdminProductVariantController;
 use App\Http\Controllers\Admin\ProductAttributeValueController as AdminProductAttributeValueController;
 use App\Http\Controllers\Admin\RelatedProductController as AdminRelatedProductController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\NavigationItemController as AdminNavigationItemController;
+use App\Http\Controllers\Admin\ContentBlockController as AdminContentBlockController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +31,13 @@ Route::prefix('catalog')->group(function () {
     Route::get('/home', CatalogHomeController::class);
     Route::get('/categories/{slug}', [CategoryController::class, 'show']);
     Route::get('/products/{slug}', [ProductController::class, 'show']);
+});
+
+// Public Configuration API
+Route::prefix('config')->group(function () {
+    Route::get('/settings', [ConfigController::class, 'settings']);
+    Route::get('/navigation/{location}', [ConfigController::class, 'navigation']);
+    Route::get('/content/{page}', [ConfigController::class, 'content']);
 });
 
 require __DIR__.'/auth.php';
@@ -257,4 +269,65 @@ Route::prefix('admin')
         Route::delete('attributes/{attribute}/values/{value}', [AdminAttributeValueController::class, 'destroy'])
             ->name('attributes.values.destroy')
             ->middleware('permission:catalog.manage');
+
+        // Configuration Management Routes
+        Route::prefix('settings')->group(function () {
+            Route::get('/', [AdminSettingController::class, 'index'])
+                ->name('settings.index');
+            Route::post('/', [AdminSettingController::class, 'store'])
+                ->name('settings.store');
+            Route::get('/group/{group}', [AdminSettingController::class, 'byGroup'])
+                ->name('settings.byGroup');
+            Route::put('/bulk', [AdminSettingController::class, 'bulkUpdate'])
+                ->name('settings.bulkUpdate');
+            Route::get('/{setting}', [AdminSettingController::class, 'show'])
+                ->name('settings.show');
+            Route::put('/{setting}', [AdminSettingController::class, 'update'])
+                ->name('settings.update');
+            Route::delete('/{setting}', [AdminSettingController::class, 'destroy'])
+                ->name('settings.destroy');
+        });
+
+        Route::prefix('navigation')->group(function () {
+            Route::get('/', [AdminNavigationItemController::class, 'index'])
+                ->name('navigation.index');
+            Route::get('/{location}', [AdminNavigationItemController::class, 'show'])
+                ->name('navigation.show');
+            Route::post('/items', [AdminNavigationItemController::class, 'store'])
+                ->name('navigation.items.store');
+            Route::put('/items/{navigationItem}', [AdminNavigationItemController::class, 'update'])
+                ->name('navigation.items.update');
+            Route::delete('/items/{navigationItem}', [AdminNavigationItemController::class, 'destroy'])
+                ->name('navigation.items.destroy');
+            Route::post('/items/reorder', [AdminNavigationItemController::class, 'reorder'])
+                ->name('navigation.items.reorder');
+        });
+
+        Route::prefix('content-blocks')->group(function () {
+            Route::get('/', [AdminContentBlockController::class, 'index'])
+                ->name('content-blocks.index');
+            Route::post('/', [AdminContentBlockController::class, 'store'])
+                ->name('content-blocks.store');
+            Route::get('/{contentBlock}', [AdminContentBlockController::class, 'show'])
+                ->name('content-blocks.show');
+            Route::put('/{contentBlock}', [AdminContentBlockController::class, 'update'])
+                ->name('content-blocks.update');
+            Route::delete('/{contentBlock}', [AdminContentBlockController::class, 'destroy'])
+                ->name('content-blocks.destroy');
+            Route::post('/reorder', [AdminContentBlockController::class, 'reorder'])
+                ->name('content-blocks.reorder');
+        });
+
+        Route::prefix('pages')->group(function () {
+            Route::get('/', [AdminPageController::class, 'index'])
+                ->name('pages.index');
+            Route::post('/', [AdminPageController::class, 'store'])
+                ->name('pages.store');
+            Route::get('/{page}', [AdminPageController::class, 'show'])
+                ->name('pages.show');
+            Route::put('/{page}', [AdminPageController::class, 'update'])
+                ->name('pages.update');
+            Route::delete('/{page}', [AdminPageController::class, 'destroy'])
+                ->name('pages.destroy');
+        });
     });
