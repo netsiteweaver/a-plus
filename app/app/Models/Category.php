@@ -20,6 +20,7 @@ class Category extends Model
         'status',
         'position',
         'is_visible',
+        'is_featured',
         'meta_title',
         'meta_description',
         'data',
@@ -28,6 +29,7 @@ class Category extends Model
     protected $casts = [
         'data' => 'array',
         'is_visible' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function parent()

@@ -36,6 +36,16 @@ export const catalogApi = {
     deleteCategory(id) {
         return api.delete(`/admin/categories/${id}`);
     },
+    uploadCategoryImage(categoryId, formData) {
+        return api.post(`/admin/categories/${categoryId}/image`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
+    deleteCategoryImage(categoryId) {
+        return api.delete(`/admin/categories/${categoryId}/image`);
+    },
 
     // Products
     listProducts(params = {}) {

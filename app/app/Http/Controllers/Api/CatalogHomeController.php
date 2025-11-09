@@ -13,9 +13,11 @@ class CatalogHomeController extends Controller
     public function __invoke()
     {
         $categories = Category::query()
+            ->where('status', 'published')
             ->where('is_visible', true)
+            ->where('is_featured', true)
             ->orderBy('position')
-            ->take(3)
+            ->take(6)
             ->get();
 
         $productPool = Product::published()

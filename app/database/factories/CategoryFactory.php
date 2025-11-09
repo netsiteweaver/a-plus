@@ -26,6 +26,7 @@ class CategoryFactory extends Factory
             'status' => 'published',
             'position' => $this->faker->numberBetween(0, 100),
             'is_visible' => true,
+            'is_featured' => $this->faker->boolean(30), // 30% chance of being featured
             'meta_title' => Str::title($name) . ' | ' . config('app.name'),
             'meta_description' => $this->faker->sentence(16),
             'data' => [

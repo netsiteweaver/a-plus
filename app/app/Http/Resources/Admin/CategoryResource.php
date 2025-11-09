@@ -35,6 +35,7 @@ class CategoryResource extends JsonResource
             'status' => $this->status,
             'position' => $this->position,
             'is_visible' => $this->is_visible,
+            'is_featured' => $this->is_featured,
             'meta_title' => $this->meta_title,
             'meta_description' => $this->meta_description,
             'data' => $this->data,

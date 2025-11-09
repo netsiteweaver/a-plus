@@ -26,6 +26,7 @@ class UpdateCategoryRequest extends FormRequest
             'status' => ['sometimes', 'string', 'in:draft,published,archived'],
             'position' => ['sometimes', 'integer', 'min:0'],
             'is_visible' => ['sometimes', 'boolean'],
+            'is_featured' => ['sometimes', 'boolean'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string'],
             'data' => ['nullable', 'array'],

@@ -129,9 +129,24 @@
                     class="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-xl transition hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20"
                 >
                     <div class="relative pb-[70%]">
-                        <img :src="category.image" :alt="category.name" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
+                        <img 
+                            v-if="category.image" 
+                            :src="category.image" 
+                            :alt="category.name" 
+                            class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110" 
+                            loading="lazy"
+                            @error="(e) => e.target.style.display = 'none'"
+                        />
+                        <div 
+                            v-else 
+                            class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-100 to-purple-50"
+                        >
+                            <svg class="h-16 w-16 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-                        <span class="absolute left-5 top-5 rounded-full border-2 border-white/80 bg-white/90 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.3em] text-purple-700 shadow-lg backdrop-blur-sm">{{ category.accent }}</span>
+                        <span v-if="category.accent" class="absolute left-5 top-5 rounded-full border-2 border-white/80 bg-white/90 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.3em] text-purple-700 shadow-lg backdrop-blur-sm">{{ category.accent }}</span>
                     </div>
                     <div class="space-y-3 p-6">
                         <h3 class="text-lg font-bold text-slate-900 transition group-hover:text-purple-700">{{ category.name }}</h3>

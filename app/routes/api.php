@@ -94,6 +94,14 @@ Route::prefix('admin')
             ->name('categories.destroy')
             ->middleware('permission:catalog.manage');
 
+        Route::post('categories/{category}/image', [AdminCategoryController::class, 'uploadImage'])
+            ->name('categories.image.upload')
+            ->middleware('permission:catalog.manage');
+
+        Route::delete('categories/{category}/image', [AdminCategoryController::class, 'deleteImage'])
+            ->name('categories.image.delete')
+            ->middleware('permission:catalog.manage');
+
         Route::get('products', [AdminProductController::class, 'index'])
             ->name('products.index')
             ->middleware('permission:catalog.view');
