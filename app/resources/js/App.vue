@@ -2,6 +2,7 @@
     <component :is="layoutComponent">
         <router-view />
     </component>
+    <GlobalLoader />
 </template>
 
 <script setup>
@@ -11,6 +12,7 @@ import { useConfigStore } from '@/stores/config';
 import AppLayout from '@/components/layout/AppLayout.vue';
 import AdminLayout from '@/components/admin/AdminLayout.vue';
 import AdminAuthLayout from '@/components/admin/AdminAuthLayout.vue';
+import GlobalLoader from '@/components/shared/GlobalLoader.vue';
 
 const route = useRoute();
 const configStore = useConfigStore();
