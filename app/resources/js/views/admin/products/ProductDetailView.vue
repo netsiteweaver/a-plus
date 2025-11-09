@@ -114,9 +114,17 @@ async function refreshProduct() {
         const response = await catalogApi.getProduct(route.params.id, {
             include: ['brand', 'categories', 'variants.option_values', 'options.values', 'media', 'attributeValues.attribute', 'attributeValues.attributeValue', 'relatedProducts.related'],
         });
-        product.value = normalizeProduct(response.data?.data ?? response.data);
         
-        console.log('Product loaded:', product.value);
+        console.log('Raw API response:', response);
+        console.log('Response data:', response.data);
+        console.log('Response data.data:', response.data?.data);
+        
+        const rawProduct = response.data?.data ?? response.data;
+        console.log('Raw product before normalize:', rawProduct);
+        
+        product.value = normalizeProduct(rawProduct);
+        
+        console.log('Product after normalize:', product.value);
         
         // Update breadcrumb with product name
         if (product.value?.name) {
