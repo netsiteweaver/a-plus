@@ -1,17 +1,19 @@
 <template>
     <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 text-slate-700 backdrop-blur-xl">
-        <div class="hidden border-b border-sky-100 bg-sky-50/90 text-xs text-slate-600 md:block">
+        <div class="hidden border-b border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 text-xs text-slate-700 md:block">
             <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
-                <p class="flex items-center gap-2">
-                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-sky-500"></span>
-                    Next-day delivery in selected cities.
+                <p class="flex items-center gap-2 font-semibold text-green-700">
+                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M1 1.75A.75.75 0 011.75 1h1.628a1.75 1.75 0 011.734 1.51L5.18 3a65.25 65.25 0 0113.36 1.412.75.75 0 01.58.875 48.645 48.645 0 01-1.618 6.2.75.75 0 01-.712.513H6a2.503 2.503 0 00-2.292 1.5H17.25a.75.75 0 010 1.5H2.76a.75.75 0 01-.748-.807 4.002 4.002 0 012.716-3.486L3.626 2.716a.25.25 0 00-.248-.216H1.75A.75.75 0 011 1.75zM6 17.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15.5 19a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                    </svg>
+                    Free shipping on orders over $50
                 </p>
                 <nav class="flex items-center gap-5">
                     <RouterLink
                         v-for="item in utilityNavigation"
                         :key="item.to"
                         :to="item.to"
-                        class="transition hover:text-sky-700"
+                        class="transition hover:text-green-700"
                     >
                         {{ item.label }}
                     </RouterLink>
@@ -47,8 +49,8 @@
                     member perks
                 </button> -->
                 <!-- <RouterLink to="/support" class="hidden text-sm transition hover:text-sky-700 md:block">Help</RouterLink> -->
-                <button class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] transition hover:border-sky-400 hover:text-sky-700" @click="toggleCartDrawer" aria-label="Toggle cart drawer">
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <button class="inline-flex items-center gap-2 rounded-full border-2 border-orange-400 bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.25em] text-white shadow-lg shadow-orange-500/30 transition hover:from-orange-600 hover:to-orange-700 hover:shadow-xl" @click="toggleCartDrawer" aria-label="Toggle cart drawer">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M2.25 3h1.386a1.125 1.125 0 0 1 1.087.835l.383 1.437M7.5 14.25a3 3 0 1 1-6 0" />
                         <path d="M7.5 14.25h10.128a2.25 2.25 0 0 0 2.206-1.752l1.682-7.367A1.125 1.125 0 0 0 20.418 3H5.106" />
                         <path d="M7.5 14.25 6.114 8.772M11.25 6.75h1.5M9 11.25h6" />
@@ -81,7 +83,11 @@
                     <span v-if="item.columns" class="text-xs text-slate-400">v</span>
                 </RouterLink>
                 <div class="flex-1"></div>
-                <RouterLink to="/category/deals" class="inline-flex items-center gap-2 rounded-full border border-sky-500/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-sky-600 transition hover:border-sky-500 hover:text-sky-700">
+                <RouterLink to="/category/deals" class="group inline-flex items-center gap-2 rounded-full border-2 border-red-400 bg-gradient-to-r from-red-500 to-red-600 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.25em] text-white shadow-lg shadow-red-500/30 transition hover:from-red-600 hover:to-red-700">
+                    <span class="flex h-1.5 w-1.5">
+                        <span class="absolute inline-flex h-1.5 w-1.5 animate-ping rounded-full bg-white opacity-75"></span>
+                        <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-white"></span>
+                    </span>
                     Deals live now
                 </RouterLink>
             </nav>
