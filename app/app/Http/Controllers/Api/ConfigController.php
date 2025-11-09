@@ -58,7 +58,7 @@ class ConfigController extends Controller
         return $items->map(function ($item) {
             $formatted = [
                 'label' => $item->label,
-                'url' => $item->url,
+                'to' => $item->url,  // Use 'to' for Vue Router compatibility
                 'icon' => $item->icon,
                 'description' => $item->description,
                 'is_mega' => $item->is_mega,
@@ -72,7 +72,7 @@ class ConfigController extends Controller
                         'items' => $column->items->map(function ($megaItem) {
                             return [
                                 'label' => $megaItem->label,
-                                'url' => $megaItem->url,
+                                'to' => $megaItem->url,  // Use 'to' for Vue Router compatibility
                             ];
                         }),
                     ];
