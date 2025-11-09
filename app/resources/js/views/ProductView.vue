@@ -174,8 +174,10 @@ import { useRoute } from 'vue-router';
 import Breadcrumbs from '@/components/common/Breadcrumbs.vue';
 import ProductGrid from '@/components/product/ProductGrid.vue';
 import ProductMediaGallery from '@/components/product/ProductMediaGallery.vue';
+import { useCurrency } from '@/composables/useCurrency';
 
 const route = useRoute();
+const { formatCurrency } = useCurrency();
 const loading = ref(true);
 const product = ref(null);
 const options = ref([]);
@@ -273,7 +275,4 @@ const featureHighlights = computed(() => {
         .map((item) => `${item.label}: ${item.value}`)
         .slice(0, 6);
 });
-
-const formatCurrency = (value) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value ?? 0);
 </script>

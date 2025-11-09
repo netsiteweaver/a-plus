@@ -35,8 +35,8 @@ export const useConfigStore = defineStore('config', {
         legalAddress: (state) => state.settings.legal?.legal_address || {},
 
         // Business Settings
-        currency: (state) => state.settings.business?.currency || 'USD',
-        currencySymbol: (state) => state.settings.business?.currency_symbol || '$',
+        currency: (state) => state.settings.business?.currency || 'MUR',
+        currencySymbol: (state) => state.settings.business?.currency_symbol || 'Rs',
         timezone: (state) => state.settings.business?.timezone || 'UTC',
         businessEmail: (state) => state.settings.business?.email || '',
         businessPhone: (state) => state.settings.business?.phone_number || '',

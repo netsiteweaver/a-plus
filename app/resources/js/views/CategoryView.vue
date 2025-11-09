@@ -82,7 +82,9 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import Breadcrumbs from '@/components/common/Breadcrumbs.vue';
 import ProductGrid from '@/components/product/ProductGrid.vue';
+import { useCurrency } from '@/composables/useCurrency';
 
+const { formatCurrency } = useCurrency();
 const route = useRoute();
 const loading = ref(true);
 const category = ref(null);
@@ -122,7 +124,4 @@ const breadcrumbs = computed(() => [
 const resetFilters = () => {
     // placeholder for future interactive filtering
 };
-
-const formatCurrency = (value) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value ?? 0);
 </script>

@@ -180,7 +180,9 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import ProductGrid from '@/components/product/ProductGrid.vue';
+import { useCurrency } from '@/composables/useCurrency';
 
+const { formatCurrency } = useCurrency();
 const loading = ref(true);
 const hero = ref(null);
 const featuredCategories = ref([]);
@@ -201,7 +203,4 @@ async function fetchHome() {
 }
 
 onMounted(fetchHome);
-
-const formatCurrency = (value) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value ?? 0);
 </script>

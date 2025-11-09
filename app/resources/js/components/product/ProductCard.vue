@@ -23,7 +23,7 @@
                 v-if="product.compare_at_price && product.price"
                 class="absolute right-4 top-4 rounded-full bg-gradient-to-br from-red-500 to-red-600 px-3 py-1 text-xs font-bold text-white shadow-lg"
             >
-                -{{ Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100) }}%
+                {{ formatDiscount(product.compare_at_price, product.price) }}
             </span>
         </div>
 
@@ -68,6 +68,8 @@
 </template>
 
 <script setup>
+import { useCurrency } from '@/composables/useCurrency';
+
 const props = defineProps({
     product: {
         type: Object,
@@ -75,12 +77,7 @@ const props = defineProps({
     },
 });
 
-const formatCurrency = (value) =>
-    new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 0,
-    }).format(value ?? 0);
+const { formatCurrency, formatDiscount } = useCurrency();
 
 const getBadgeClasses = (badge) => {
     const badgeLower = badge?.toLowerCase() || '';

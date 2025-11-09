@@ -108,6 +108,16 @@ const routes = [
                     requiresPermission: 'catalog.view',
                 },
             },
+            {
+                path: 'settings',
+                name: 'admin.settings',
+                component: () => import('../views/admin/settings/SettingsView.vue'),
+                meta: {
+                    title: 'Settings',
+                    breadcrumb: 'Settings',
+                    requiresPermission: 'catalog.view',
+                },
+            },
         ],
     },
     {

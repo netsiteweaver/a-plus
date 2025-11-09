@@ -35,8 +35,8 @@ class SettingsSeeder extends Seeder
             ], 'group' => 'legal', 'type' => 'json', 'is_public' => false, 'description' => 'Legal registered address'],
 
             // Business Settings
-            ['key' => 'currency', 'value' => ['USD'], 'group' => 'business', 'type' => 'string', 'is_public' => true, 'description' => 'Default currency code'],
-            ['key' => 'currency_symbol', 'value' => ['$'], 'group' => 'business', 'type' => 'string', 'is_public' => true, 'description' => 'Currency symbol'],
+            ['key' => 'currency', 'value' => ['MUR'], 'group' => 'business', 'type' => 'string', 'is_public' => true, 'description' => 'Default currency code'],
+            ['key' => 'currency_symbol', 'value' => ['Rs'], 'group' => 'business', 'type' => 'string', 'is_public' => true, 'description' => 'Currency symbol'],
             ['key' => 'timezone', 'value' => ['UTC'], 'group' => 'business', 'type' => 'string', 'is_public' => true, 'description' => 'Default timezone'],
             ['key' => 'date_format', 'value' => ['Y-m-d'], 'group' => 'business', 'type' => 'string', 'is_public' => true, 'description' => 'Date format'],
             ['key' => 'time_format', 'value' => ['H:i:s'], 'group' => 'business', 'type' => 'string', 'is_public' => true, 'description' => 'Time format'],
