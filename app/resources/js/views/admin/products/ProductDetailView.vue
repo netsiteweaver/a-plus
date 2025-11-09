@@ -147,7 +147,7 @@ async function loadCategories() {
 
 async function loadAttributes() {
     try {
-        const response = await catalogApi.listAttributes({ per_page: 200, include_values: 1 });
+        const response = await catalogApi.listAttributes({ per_page: 100, include_values: 1 });
         attributes.value = response.data?.data ?? [];
     } catch (err) {
         console.error('Error loading attributes:', err);
