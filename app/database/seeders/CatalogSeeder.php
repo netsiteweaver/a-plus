@@ -291,7 +291,6 @@ class CatalogSeeder extends Seeder
                 'type' => 'image',
                 'disk' => 'remote',
                 'path' => $url,
-                'url' => $url,
                 'is_primary' => $index === 0,
                 'position' => $index + 1,
                 'alt_text' => $product->name . ' imagery',

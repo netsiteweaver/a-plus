@@ -15,13 +15,14 @@ class ProductMediaFactory extends Factory
 
     public function definition(): array
     {
+        $imageUrl = $this->faker->imageUrl(1600, 900, 'technology', true);
+        
         return [
             'product_id' => Product::query()->inRandomOrder()->value('id') ?? Product::factory(),
             'product_variant_id' => null,
             'type' => 'image',
-            'disk' => null,
-            'path' => null,
-            'url' => $this->faker->imageUrl(1600, 900, 'technology', true),
+            'disk' => 'remote',
+            'path' => $imageUrl,
             'is_primary' => false,
             'position' => $this->faker->numberBetween(0, 5),
             'alt_text' => $this->faker->sentence(6),
