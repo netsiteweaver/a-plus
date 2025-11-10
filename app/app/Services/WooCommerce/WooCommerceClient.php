@@ -37,6 +37,9 @@ class WooCommerceClient
     public function listProducts(int $page = 1, array $parameters = []): array
     {
         $statusFilter = Arr::get($parameters, 'statuses', $this->defaultStatuses());
+        if (! is_array($statusFilter)) {
+            $statusFilter = array_filter([$statusFilter]);
+        }
 
         $params = array_merge([
             'page' => $page,
@@ -46,7 +49,7 @@ class WooCommerceClient
         ], Arr::except($parameters, ['statuses']));
 
         if (! empty($statusFilter)) {
-            $params['status'] = implode(',', $statusFilter);
+            $params['status'] = count($statusFilter) > 1 ? $statusFilter : $statusFilter[0];
         }
 
         return $this->get('products', $params);
