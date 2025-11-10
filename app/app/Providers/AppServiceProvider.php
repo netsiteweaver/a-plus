@@ -25,5 +25,16 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::createUrlUsing(function (object $notifiable, string $token) use ($frontendUrl) {
             return $frontendUrl."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
+
+        $this->registerConsoleCommands();
+    }
+
+    protected function registerConsoleCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \App\Console\Commands\ImportWooCommerceProducts::class,
+            ]);
+        }
     }
 }
