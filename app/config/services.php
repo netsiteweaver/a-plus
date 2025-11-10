@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'woocommerce' => [
+        'base_url' => env('WOOCOMMERCE_BASE_URL'),
+        'consumer_key' => env('WOOCOMMERCE_CONSUMER_KEY'),
+        'consumer_secret' => env('WOOCOMMERCE_CONSUMER_SECRET'),
+        'per_page' => env('WOOCOMMERCE_PER_PAGE', 50),
+        'timeout' => env('WOOCOMMERCE_TIMEOUT', 30),
+        'verify_ssl' => env('WOOCOMMERCE_VERIFY_SSL', true),
+        'currency' => env('WOOCOMMERCE_CURRENCY', 'USD'),
+    ],
+
 ];

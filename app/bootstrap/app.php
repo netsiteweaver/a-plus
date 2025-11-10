@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withCommands([
+        \App\Console\Commands\CheckStorageSetup::class,
+        \App\Console\Commands\ImportWooCommerceProducts::class,
+    ])
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->api(prepend: [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
