@@ -6,7 +6,9 @@ use App\Services\WooCommerce\WooCommerceException;
 use App\Services\WooCommerce\WooCommerceProductImporter;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'catalog:import-woocommerce', description: 'Import products, categories, variants, and media from a WooCommerce store.')]
 class ImportWooCommerceProducts extends Command
 {
     protected $signature = 'catalog:import-woocommerce
