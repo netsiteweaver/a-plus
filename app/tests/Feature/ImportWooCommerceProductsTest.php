@@ -151,10 +151,11 @@ class ImportWooCommerceProductsTest extends TestCase
 
     protected function setupWooCommerceConfig(): void
     {
-        config()->set('services.woocommerce.base_url', 'https://woocommerce.test/wp-json/wc/v3');
-        config()->set('services.woocommerce.consumer_key', 'ck_test');
-        config()->set('services.woocommerce.consumer_secret', 'cs_test');
-        config()->set('services.woocommerce.verify_ssl', true);
-        config()->set('services.woocommerce.currency', 'USD');
+        config()->set('woocommerce.url', 'https://woocommerce.test');
+        config()->set('woocommerce.consumer_key', 'ck_test');
+        config()->set('woocommerce.consumer_secret', 'cs_test');
+        config()->set('woocommerce.verify', true);
+        config()->set('woocommerce.default_currency', 'USD');
+        config()->set('woocommerce.per_page', 50);
     }
 }

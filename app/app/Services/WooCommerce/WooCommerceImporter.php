@@ -12,6 +12,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
@@ -27,11 +30,12 @@ class WooCommerceImporter
     protected array $optionCache = [];
     protected array $productMediaCache = [];
     protected ?OutputInterface $output = null;
+    protected ?\Closure $progressCallback = null;
 
     public function __construct(WooCommerceClient $client)
     {
         $this->client = $client;
-        $this->currency = strtoupper((string) (config('services.woocommerce.currency') ?? 'USD'));
+        $this->currency = strtoupper((string) (config('woocommerce.default_currency') ?? 'USD'));
         $this->hydrateCategoryCache();
         $this->resetStats();
     }
@@ -40,9 +44,10 @@ class WooCommerceImporter
      * @param  array<string, mixed>  $options
      * @return array<string, array<string, int>>
      */
-    public function import(array $options = [], ?OutputInterface $output = null): array
+    public function import(array $options = [], ?OutputInterface $output = null, ?\Closure $progressCallback = null): array
     {
         $this->output = $output;
+        $this->progressCallback = $progressCallback;
         $this->resetStats();
         $this->hydrateCategoryCache();
 
@@ -118,9 +123,25 @@ class WooCommerceImporter
 
         $optionMap = $this->syncProductOptions($product, Arr::get($remoteProduct, 'attributes', []));
 
+        $downloadingImages = config('woocommerce.download_images', true);
+        $imageCount = count(Arr::get($remoteProduct, 'images', []));
+        
+        if ($downloadingImages && $imageCount > 0) {
+            $this->emitProgress('downloading_images', [
+                'product_id' => $product->id,
+                'product_name' => $product->name,
+                'image_count' => $imageCount,
+            ]);
+        }
+
         $this->syncProductMedia($product, Arr::get($remoteProduct, 'images', []));
 
         $this->syncProductVariants($product, $remoteProduct, $optionMap);
+        
+        $this->emitProgress('product_completed', [
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+        ]);
     }
 
     protected function upsertProduct(array $remoteProduct): Product
@@ -301,6 +322,7 @@ class WooCommerceImporter
     {
         $existingMedia = $product->media()->withTrashed()->get();
         $keepIds = [];
+        $shouldDownload = config('woocommerce.download_images', true);
 
         foreach ($remoteImages as $index => $remoteImage) {
             if (! is_array($remoteImage)) {
@@ -314,11 +336,26 @@ class WooCommerceImporter
                 $media->restore();
             }
 
+            // Determine disk and path for the image
+            $disk = 'remote';
+            $path = $remoteImage['src'] ?? $media->path;
+
+            // Download image if configured to do so
+            if ($shouldDownload && ! empty($remoteImage['src'])) {
+                $localPath = $this->downloadAndStoreImage($remoteImage['src'], $product->id, $index);
+                if ($localPath) {
+                    $disk = 'public';
+                    $path = $localPath;
+                } else {
+                    $this->log("<comment>Failed to download image {$remoteImage['src']}, using remote URL</comment>", OutputInterface::VERBOSITY_VERBOSE);
+                }
+            }
+
             $media->fill([
                 'product_id' => $product->id,
                 'type' => 'image',
-                'disk' => $media->disk ?? 'remote',
-                'path' => $remoteImage['src'] ?? $media->path,
+                'disk' => $disk,
+                'path' => $path,
                 'is_primary' => $index === 0,
                 'position' => $index + 1,
                 'alt_text' => $remoteImage['alt'] ?? $remoteImage['name'] ?? null,
@@ -477,10 +514,25 @@ class WooCommerceImporter
 
         $media = $this->resolveMediaForVariant($product, $remoteImage);
         if (! $media) {
+            $shouldDownload = config('woocommerce.download_images', true);
+            $disk = 'remote';
+            $path = $remoteImage['src'];
+
+            // Download image if configured to do so
+            if ($shouldDownload) {
+                $localPath = $this->downloadAndStoreImage($remoteImage['src'], $product->id, 'variant-'.$variant->id);
+                if ($localPath) {
+                    $disk = 'public';
+                    $path = $localPath;
+                } else {
+                    $this->log("<comment>Failed to download variant image {$remoteImage['src']}, using remote URL</comment>", OutputInterface::VERBOSITY_VERBOSE);
+                }
+            }
+
             $media = $product->media()->create([
                 'type' => 'image',
-                'disk' => 'remote',
-                'path' => $remoteImage['src'],
+                'disk' => $disk,
+                'path' => $path,
                 'is_primary' => false,
                 'position' => (int) $product->media()->max('position') + 1,
                 'alt_text' => $remoteImage['alt'] ?? $remoteImage['name'] ?? null,
@@ -1216,5 +1268,129 @@ class WooCommerceImporter
         if ($this->output) {
             $this->output->writeln($message, $verbosity);
         }
+    }
+
+    protected function emitProgress(string $event, array $data = []): void
+    {
+        if ($this->progressCallback) {
+            ($this->progressCallback)($event, $data);
+        }
+    }
+
+    /**
+     * Download an image from a remote URL and store it locally.
+     *
+     * @param  string  $url  The remote image URL
+     * @param  int  $productId  The product ID for organizing storage
+     * @param  string|int  $identifier  Unique identifier for the image (index, variant ID, etc.)
+     * @return string|null  The local storage path or null if download failed
+     */
+    protected function downloadAndStoreImage(string $url, int $productId, string|int $identifier): ?string
+    {
+        try {
+            // Download the image
+            $response = Http::timeout(30)
+                ->withOptions(['verify' => config('woocommerce.verify', true)])
+                ->get($url);
+
+            if (! $response->successful()) {
+                Log::warning('Failed to download image from WooCommerce.', [
+                    'url' => $url,
+                    'status' => $response->status(),
+                    'product_id' => $productId,
+                ]);
+
+                return null;
+            }
+
+            // Get the image content
+            $imageContent = $response->body();
+
+            if (empty($imageContent)) {
+                return null;
+            }
+
+            // Determine file extension from URL or content type
+            $extension = $this->getImageExtension($url, $response->header('Content-Type'));
+
+            // Generate a unique filename
+            $filename = $this->generateImageFilename($url, $identifier, $extension);
+
+            // Store the image in the public disk
+            $path = "products/{$productId}/{$filename}";
+
+            if (Storage::disk('public')->put($path, $imageContent)) {
+                return $path;
+            }
+
+            return null;
+        } catch (Throwable $exception) {
+            Log::error('Exception while downloading WooCommerce image.', [
+                'url' => $url,
+                'product_id' => $productId,
+                'exception' => $exception->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Extract or determine the file extension for an image.
+     */
+    protected function getImageExtension(string $url, ?string $contentType): string
+    {
+        // Try to get extension from URL
+        $parsedUrl = parse_url($url);
+        $path = $parsedUrl['path'] ?? '';
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        if ($extension && in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])) {
+            return strtolower($extension);
+        }
+
+        // Try to determine from content type
+        if ($contentType) {
+            $mimeMap = [
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/gif' => 'gif',
+                'image/webp' => 'webp',
+                'image/svg+xml' => 'svg',
+            ];
+
+            foreach ($mimeMap as $mime => $ext) {
+                if (str_contains($contentType, $mime)) {
+                    return $ext;
+                }
+            }
+        }
+
+        // Default to jpg
+        return 'jpg';
+    }
+
+    /**
+     * Generate a unique filename for the downloaded image.
+     */
+    protected function generateImageFilename(string $url, string|int $identifier, string $extension): string
+    {
+        // Try to extract original filename from URL
+        $parsedUrl = parse_url($url);
+        $path = $parsedUrl['path'] ?? '';
+        $originalName = pathinfo($path, PATHINFO_FILENAME);
+
+        // Sanitize the original name
+        if ($originalName) {
+            $sanitized = Str::slug($originalName);
+            if ($sanitized && strlen($sanitized) <= 100) {
+                return "{$sanitized}-{$identifier}.{$extension}";
+            }
+        }
+
+        // Generate a hash-based name if original name is not usable
+        $hash = substr(md5($url), 0, 12);
+
+        return "{$hash}-{$identifier}.{$extension}";
     }
 }

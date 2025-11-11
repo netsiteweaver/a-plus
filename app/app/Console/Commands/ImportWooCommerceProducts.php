@@ -32,13 +32,13 @@ class ImportWooCommerceProducts extends Command
 
     public function handle(WooCommerceImporter $importer): int
     {
-        if (! config('services.woocommerce.base_url')) {
-            $this->error('WooCommerce base URL is not configured (WOOCOMMERCE_BASE_URL).');
+        if (! config('woocommerce.url')) {
+            $this->error('WooCommerce URL is not configured (WOOCOMMERCE_URL).');
 
             return self::FAILURE;
         }
 
-        if (! config('services.woocommerce.consumer_key') || ! config('services.woocommerce.consumer_secret')) {
+        if (! config('woocommerce.consumer_key') || ! config('woocommerce.consumer_secret')) {
             $this->error('WooCommerce consumer key/secret are not configured (WOOCOMMERCE_CONSUMER_KEY / WOOCOMMERCE_CONSUMER_SECRET).');
 
             return self::FAILURE;
@@ -85,14 +85,43 @@ class ImportWooCommerceProducts extends Command
             DB::beginTransaction();
         }
 
+        // Create progress bar
+        $progressBar = $this->output->createProgressBar();
+        $progressBar->setFormat(" %current% products | %message%\n %bar% %percent:3s%%");
+        $progressBar->setMessage('Initializing...');
+        
+        $downloadingImages = config('woocommerce.download_images', true);
+
+        // Progress callback for the importer
+        $progressCallback = function (string $event, array $data) use ($progressBar, $downloadingImages) {
+            match ($event) {
+                'downloading_images' => $downloadingImages 
+                    ? $progressBar->setMessage("📥 Downloading {$data['image_count']} images for: " . \Illuminate\Support\Str::limit($data['product_name'], 40))
+                    : null,
+                'product_completed' => $progressBar->advance(),
+                default => null,
+            };
+        };
+
         try {
-            $stats = $importer->import($importOptions, $this->output);
+            $this->info('🚀 Starting WooCommerce import...');
+            $this->newLine();
+            
+            $stats = $importer->import($importOptions, $this->output, $progressCallback);
+
+            // Finish progress bar
+            $progressBar->finish();
+            $this->newLine(2);
 
             if ($dryRun) {
                 DB::rollBack();
                 $this->warn('Dry run completed. No changes were persisted.');
             }
         } catch (Throwable $exception) {
+            // Finish progress bar on error
+            $progressBar->finish();
+            $this->newLine(2);
+
             if ($dryRun && DB::transactionLevel() > 0) {
                 DB::rollBack();
             }
@@ -102,7 +131,7 @@ class ImportWooCommerceProducts extends Command
             return self::FAILURE;
         }
 
-        $this->info('Import completed successfully.');
+        $this->info('✅ Import completed successfully.');
 
         $rows = [
             $this->formatSummaryRow('Categories', $stats['categories'] ?? [], 'skipped'),
