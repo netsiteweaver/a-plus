@@ -1,19 +1,39 @@
 <template>
+    <!-- Toast Notification -->
+    <Transition
+        enter-active-class="transition ease-out duration-300"
+        enter-from-class="translate-y-2 opacity-0"
+        enter-to-class="translate-y-0 opacity-100"
+        leave-active-class="transition ease-in duration-200"
+        leave-from-class="translate-y-0 opacity-100"
+        leave-to-class="translate-y-2 opacity-0"
+    >
+        <div
+            v-if="toast.show"
+            class="fixed right-4 top-4 z-50 flex items-center gap-3 rounded-lg border-2 border-green-200 bg-gradient-to-r from-green-50 to-white px-6 py-4 shadow-2xl shadow-green-500/20"
+        >
+            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="font-semibold text-slate-800">{{ toast.message }}</span>
+        </div>
+    </Transition>
+
     <div v-if="!loading" class="space-y-20">
         <section
             v-if="hero"
-            class="relative overflow-hidden rounded-[2.5rem] border-2 border-orange-200 bg-gradient-to-br from-orange-50 via-amber-50 to-white p-10 shadow-[0_25px_60px_-35px_rgba(249,115,22,0.5)] lg:p-16"
+            class="relative overflow-hidden rounded-xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 via-sky-50 to-white p-10 shadow-[0_25px_60px_-35px_rgba(59,130,246,0.5)] lg:p-16"
         >
             <!-- Animated gradient background -->
-            <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-200/20 via-transparent to-purple-200/20"></div>
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-200/20 via-transparent to-purple-200/20"></div>
             
             <div class="relative z-10 grid gap-12 lg:grid-cols-2">
                 <div class="space-y-6 text-slate-800">
                     <div class="flex items-center gap-3">
-                        <p class="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.28em] text-orange-600">
+                        <p class="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.28em] text-blue-600">
                             <span class="flex h-2 w-2">
-                                <span class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-orange-400 opacity-75"></span>
-                                <span class="relative inline-flex h-2 w-2 rounded-full bg-orange-500"></span>
+                                <span class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-blue-400 opacity-75"></span>
+                                <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
                             </span>
                             {{ hero.badge ?? 'Featured drop' }}
                         </p>
@@ -27,24 +47,31 @@
                     <div class="flex flex-wrap items-center gap-4 pt-4 text-sm">
                         <RouterLink
                             :to="hero.cta?.to ?? '/'"
-                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-4 font-bold uppercase tracking-[0.28em] text-white shadow-2xl shadow-orange-500/40 transition-all hover:from-orange-600 hover:to-orange-700 hover:shadow-2xl hover:shadow-orange-500/60"
+                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 font-bold uppercase tracking-[0.28em] text-white shadow-2xl shadow-blue-500/40 transition-all hover:from-blue-600 hover:to-blue-700 hover:shadow-2xl hover:shadow-blue-500/60"
                         >
                             <span class="relative z-10">{{ hero.cta?.label ?? 'Shop now' }}</span>
                             <svg class="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
                             </svg>
                         </RouterLink>
-                        <RouterLink to="/services/installation" class="inline-flex items-center gap-2 rounded-full border-2 border-slate-300 bg-white/80 px-6 py-3 font-semibold text-slate-700 backdrop-blur-sm transition hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700">
+                        <!-- <RouterLink to="/services/installation" class="inline-flex items-center gap-2 rounded-full border-2 border-slate-300 bg-white/80 px-6 py-3 font-semibold text-slate-700 backdrop-blur-sm transition hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700">
                             Concierge install
                             <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
                             </svg>
-                        </RouterLink>
+                        </RouterLink> -->
                     </div>
                 </div>
                 <div class="relative">
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-br from-orange-300/40 to-purple-300/40 blur-3xl"></div>
-                    <img :src="hero.image" :alt="hero.title" class="relative z-10 w-full rounded-[2rem] object-cover shadow-2xl ring-2 ring-white/50" loading="lazy" />
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-300/40 to-purple-300/40 blur-3xl"></div>
+                    <ImageWithPlaceholder
+                        :src="hero.image"
+                        :alt="hero.title"
+                        container-class="relative z-10"
+                        image-class="w-full rounded-xl object-cover shadow-2xl ring-2 ring-white/50"
+                        icon-class="h-32 w-32"
+                        loading="lazy"
+                    />
                 </div>
             </div>
         </section>
@@ -60,19 +87,19 @@
                     </p>
                     <h2 class="text-2xl font-bold text-slate-800">Daily price drops</h2>
                 </div>
-                <RouterLink to="/category/deals" class="inline-flex items-center gap-2 rounded-full border-2 border-orange-400 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 transition hover:bg-orange-100">
+                <!-- <RouterLink to="/category/laptops" class="inline-flex items-center gap-2 rounded-lg border-2 border-orange-400 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 transition hover:bg-orange-100">
                     View all deals
                     <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
                     </svg>
-                </RouterLink>
+                </RouterLink> -->
             </div>
 
             <div class="grid gap-6 md:grid-cols-2">
                 <article
                     v-for="deal in dailyDeals"
                     :key="deal.id"
-                    class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-red-200 bg-gradient-to-br from-red-50 via-orange-50 to-white p-6 shadow-lg shadow-red-500/10 transition hover:border-red-400 hover:shadow-2xl hover:shadow-red-500/20"
+                    class="group relative flex flex-col justify-between overflow-hidden rounded-xl border-2 border-red-200 bg-gradient-to-br from-red-50 via-blue-50 to-white p-6 shadow-lg shadow-red-500/10 transition hover:border-red-400 hover:shadow-2xl hover:shadow-red-500/20"
                 >
                     <!-- Urgency badge -->
                     <div class="absolute right-4 top-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 px-3 py-1.5 text-xs font-bold text-white shadow-lg">
@@ -84,31 +111,42 @@
                         <div class="space-y-3">
                             <div class="flex items-center gap-2">
                                 <span class="flex h-1.5 w-1.5">
-                                    <span class="absolute inline-flex h-1.5 w-1.5 animate-ping rounded-full bg-orange-400 opacity-75"></span>
-                                    <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-orange-500"></span>
+                                    <span class="absolute inline-flex h-1.5 w-1.5 animate-ping rounded-full bg-blue-400 opacity-75"></span>
+                                    <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-blue-500"></span>
                                 </span>
-                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-orange-700">Limited time</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-blue-700">Limited time</p>
                             </div>
-                            <RouterLink :to="`/product/${deal.slug}`" class="block text-lg font-bold text-slate-900 transition group-hover:text-orange-600">
+                            <RouterLink :to="`/product/${deal.slug}`" class="block text-lg font-bold text-slate-900 transition group-hover:text-blue-600">
                                 {{ deal.name }}
                             </RouterLink>
                             <ul class="space-y-1 text-xs text-slate-600">
                                 <li v-for="meta in deal.meta" :key="meta" class="flex items-start gap-1.5">
-                                    <span class="mt-1 inline-block h-1 w-1 rounded-full bg-orange-400"></span>
+                                    <span class="mt-1 inline-block h-1 w-1 rounded-full bg-blue-400"></span>
                                     <span>{{ meta }}</span>
                                 </li>
                             </ul>
                         </div>
-                        <img :src="deal.image" :alt="deal.name" class="h-28 w-28 rounded-2xl object-cover shadow-lg ring-2 ring-white" loading="lazy" />
+                        <img :src="deal.image" :alt="deal.name" class="h-28 w-28 rounded-lg object-cover shadow-lg ring-2 ring-white" loading="lazy" />
                     </div>
-                    <div class="mt-5 flex items-center justify-between border-t border-orange-200 pt-4">
-                        <div class="flex items-baseline gap-3">
+                    <div class="mt-5 flex items-center justify-between border-t border-blue-200 pt-4">
+                        <div v-if="deal.price > 0" class="flex items-baseline gap-3">
                             <span class="text-2xl font-bold text-slate-900">{{ formatCurrency(deal.price) }}</span>
                             <span v-if="deal.compare_at_price" class="text-base text-red-500 line-through">{{ formatCurrency(deal.compare_at_price) }}</span>
                         </div>
-                        <button class="rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-white shadow-lg shadow-orange-500/30 transition-all hover:from-orange-600 hover:to-orange-700 hover:shadow-xl">
+                        <button
+                            v-if="deal.price > 0"
+                            @click="addToCart(deal)"
+                            class="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-white shadow-lg shadow-blue-500/30 transition-all hover:from-blue-600 hover:to-blue-700 hover:shadow-xl"
+                        >
                             Grab it
                         </button>
+                        <RouterLink
+                            v-else
+                            :to="`/product/${deal.slug}`"
+                            class="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-white shadow-lg shadow-blue-500/30 transition-all hover:from-blue-600 hover:to-blue-700 hover:shadow-xl"
+                        >
+                            View it
+                        </RouterLink>
                     </div>
                 </article>
             </div>
@@ -126,7 +164,7 @@
                     v-for="category in featuredCategories"
                     :key="category.slug"
                     :to="`/category/${category.slug}`"
-                    class="group overflow-hidden rounded-[2rem] border-2 border-slate-200 bg-white shadow-xl transition hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20"
+                    class="group overflow-hidden rounded-xl border-2 border-slate-200 bg-white shadow-xl transition hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20"
                 >
                     <div class="relative pb-[70%]">
                         <img 
@@ -168,7 +206,7 @@
                     <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Trending now</p>
                     <h2 class="text-2xl font-semibold text-slate-800">Most-loved devices</h2>
                 </div>
-                <RouterLink to="/category/most-loved" class="text-sm text-sky-600 transition hover:text-sky-700">See curated list -></RouterLink>
+                <RouterLink to="/category/laptops" class="text-sm text-sky-600 transition hover:text-sky-700">See curated list -></RouterLink>
             </div>
             <ProductGrid :products="featuredProducts" />
         </section>
@@ -177,17 +215,27 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import axios from 'axios';
 import ProductGrid from '@/components/product/ProductGrid.vue';
+import ImageWithPlaceholder from '@/components/common/ImageWithPlaceholder.vue';
 import { useCurrency } from '@/composables/useCurrency';
+import { useCartStore } from '@/stores/cart';
 
 const { formatCurrency } = useCurrency();
+const cartStore = useCartStore();
 const loading = ref(true);
 const hero = ref(null);
 const featuredCategories = ref([]);
 const dailyDeals = ref([]);
 const featuredProducts = ref([]);
+
+const toast = reactive({
+    show: false,
+    message: '',
+});
+
+let toastTimeout = null;
 
 async function fetchHome() {
     loading.value = true;
@@ -200,6 +248,26 @@ async function fetchHome() {
     } finally {
         loading.value = false;
     }
+}
+
+function showToast(message) {
+    // Clear any existing timeout
+    if (toastTimeout) {
+        clearTimeout(toastTimeout);
+    }
+
+    toast.message = message;
+    toast.show = true;
+
+    // Auto-hide after 3 seconds
+    toastTimeout = setTimeout(() => {
+        toast.show = false;
+    }, 3000);
+}
+
+function addToCart(deal) {
+    cartStore.addItem(deal, 1);
+    showToast('Item added to cart');
 }
 
 onMounted(fetchHome);

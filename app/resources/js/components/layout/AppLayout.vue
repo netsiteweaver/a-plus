@@ -9,10 +9,13 @@
         </main>
 
         <AppFooter />
+
+        <CartDrawer />
     </div>
 </template>
 
 <script setup>
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
+import CartDrawer from '@/components/cart/CartDrawer.vue';
 </script>

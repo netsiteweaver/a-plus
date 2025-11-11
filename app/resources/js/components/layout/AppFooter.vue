@@ -17,14 +17,7 @@
                 <p class="text-xs text-slate-400">&copy; {{ currentYear }} {{ companyName }}. All rights reserved. Developed by <a target="_blank" href="https://www.netsiteweaver.com">Netsiteweaver Ltd</a></p>
             </div>
 
-            <div class="grid flex-1 gap-8 text-sm text-slate-500 sm:grid-cols-2 md:grid-cols-3">
-                <div class="space-y-3">
-                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">Explore</p>
-                    <RouterLink to="/category/laptops" class="block transition hover:text-sky-600">Computers</RouterLink>
-                    <RouterLink to="/category/audio" class="block transition hover:text-sky-600">Audio</RouterLink>
-                    <RouterLink to="/category/smart-home" class="block transition hover:text-sky-600">Smart Home</RouterLink>
-                    <RouterLink to="/category/accessories" class="block transition hover:text-sky-600">Accessories</RouterLink>
-                </div>
+            <div class="grid flex-1 gap-8 text-sm text-slate-500 sm:grid-cols-2 md:grid-cols-2">
                 <div class="space-y-3">
                     <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">Support</p>
                     <RouterLink to="/support" class="block transition hover:text-sky-600">Help center</RouterLink>

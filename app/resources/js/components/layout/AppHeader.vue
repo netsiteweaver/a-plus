@@ -47,13 +47,19 @@
                     member perks
                 </button> -->
                 <!-- <RouterLink to="/support" class="hidden text-sm transition hover:text-sky-700 md:block">Help</RouterLink> -->
-                <button class="inline-flex items-center gap-2 rounded-full border-2 border-orange-400 bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.25em] text-white shadow-lg shadow-orange-500/30 transition hover:from-orange-600 hover:to-orange-700 hover:shadow-xl" @click="toggleCartDrawer" aria-label="Toggle cart drawer">
+                <button class="relative inline-flex items-center gap-2 rounded-full border-2 border-blue-400 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.25em] text-white shadow-lg shadow-blue-500/30 transition hover:from-blue-600 hover:to-blue-700 hover:shadow-xl" @click="toggleCartDrawer" aria-label="Toggle cart drawer">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M2.25 3h1.386a1.125 1.125 0 0 1 1.087.835l.383 1.437M7.5 14.25a3 3 0 1 1-6 0" />
                         <path d="M7.5 14.25h10.128a2.25 2.25 0 0 0 2.206-1.752l1.682-7.367A1.125 1.125 0 0 0 20.418 3H5.106" />
                         <path d="M7.5 14.25 6.114 8.772M11.25 6.75h1.5M9 11.25h6" />
                     </svg>
                     <span>Cart</span>
+                    <span 
+                        v-if="cartStore.itemCount > 0"
+                        class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-lg"
+                    >
+                        {{ cartStore.itemCount }}
+                    </span>
                 </button>
                 <button class="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 px-4 transition hover:border-sky-400 hover:text-sky-700 md:w-10 md:px-0" @click="toggleMobileMenu" aria-label="Toggle navigation">
                     <svg class="hidden h-5 w-5 md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -81,13 +87,13 @@
                     <span v-if="item.columns" class="text-xs text-slate-400">v</span>
                 </RouterLink>
                 <div class="flex-1"></div>
-                <RouterLink to="/category/deals" class="group inline-flex items-center gap-2 rounded-full border-2 border-red-400 bg-gradient-to-r from-red-500 to-red-600 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.25em] text-white shadow-lg shadow-red-500/30 transition hover:from-red-600 hover:to-red-700">
+                <!-- <RouterLink to="/category/deals" class="group inline-flex items-center gap-2 rounded-full border-2 border-red-400 bg-gradient-to-r from-red-500 to-red-600 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.25em] text-white shadow-lg shadow-red-500/30 transition hover:from-red-600 hover:to-red-700">
                     <span class="flex h-1.5 w-1.5">
                         <span class="absolute inline-flex h-1.5 w-1.5 animate-ping rounded-full bg-white opacity-75"></span>
                         <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-white"></span>
                     </span>
                     Deals live now
-                </RouterLink>
+                </RouterLink> -->
             </nav>
 
             <MegaMenu
@@ -142,9 +148,11 @@ import { computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import MegaMenu from '@/components/navigation/MegaMenu.vue';
 import { useUiStore } from '@/stores/ui';
+import { useCartStore } from '@/stores/cart';
 import { useSettings } from '@/composables/useSettings';
 
 const ui = useUiStore();
+const cartStore = useCartStore();
 const {
     companyName,
     companyLogo,

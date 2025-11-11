@@ -40,7 +40,14 @@
                         </div>
 
                         <div v-else class="text-center">
-                            <img v-if="previewUrl" :src="previewUrl" alt="Preview" class="mx-auto mb-3 h-32 w-32 rounded-lg object-cover" />
+                            <ImageWithPlaceholder
+                                v-if="previewUrl"
+                                :src="previewUrl"
+                                alt="Preview"
+                                container-class="mx-auto mb-3"
+                                image-class="h-32 w-32 rounded-lg object-cover"
+                                icon-class="h-12 w-12"
+                            />
                             <p class="text-sm font-semibold text-slate-700">{{ selectedFile.name }}</p>
                             <p class="text-xs text-slate-500">{{ formatFileSize(selectedFile.size) }}</p>
                             <button
@@ -152,6 +159,7 @@
 
 <script setup>
 import { reactive, watch, ref } from 'vue';
+import ImageWithPlaceholder from '@/components/common/ImageWithPlaceholder.vue';
 
 const props = defineProps({
     media: {

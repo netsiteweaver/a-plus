@@ -1,13 +1,14 @@
 <template>
     <RouterLink
         :to="`/product/${product.slug}`"
-        class="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white transition hover:border-orange-400/60 hover:shadow-[0_12px_30px_-12px_rgba(249,115,22,0.45)]"
+        class="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white transition hover:border-blue-400/60 hover:shadow-[0_12px_30px_-12px_rgba(59,130,246,0.45)]"
     >
         <div class="relative pb-[70%]">
-            <img
+            <ImageWithPlaceholder
                 :src="product.image"
                 :alt="product.name"
-                class="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
+                container-class="absolute inset-0"
+                image-class="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
                 loading="lazy"
             />
             <!-- Enhanced badge with better color psychology -->
@@ -44,21 +45,22 @@
                 </div>
             </div>
 
-            <p class="text-base font-semibold text-slate-800 transition group-hover:text-orange-600">{{ product.name }}</p>
+            <p class="text-base font-semibold text-slate-800 transition group-hover:text-blue-600">{{ product.name }}</p>
 
             <ul class="space-y-1 text-xs text-slate-500">
                 <li v-for="meta in product.meta" :key="meta">{{ meta }}</li>
             </ul>
 
             <div class="mt-auto space-y-2 pt-2">
-                <div class="flex items-baseline gap-3">
+                <div v-if="product.price > 0" class="flex items-baseline gap-3">
                     <span class="text-lg font-bold text-slate-900">{{ formatCurrency(product.price) }}</span>
                     <span v-if="product.compare_at_price" class="text-sm text-red-500 line-through">{{ formatCurrency(product.compare_at_price) }}</span>
                 </div>
                 <!-- Quick add to cart button -->
                 <button 
+                    v-if="product.price > 0"
                     @click.prevent="handleQuickAdd"
-                    class="w-full rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.28em] text-white opacity-0 shadow-lg shadow-orange-500/30 transition-all hover:from-orange-600 hover:to-orange-700 hover:shadow-xl hover:shadow-orange-500/40 group-hover:opacity-100"
+                    class="w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.28em] text-white opacity-0 shadow-lg shadow-blue-500/30 transition-all hover:from-blue-600 hover:to-blue-700 hover:shadow-xl hover:shadow-blue-500/40 group-hover:opacity-100"
                 >
                     Quick add
                 </button>
@@ -69,6 +71,8 @@
 
 <script setup>
 import { useCurrency } from '@/composables/useCurrency';
+import { useCartStore } from '@/stores/cart';
+import ImageWithPlaceholder from '@/components/common/ImageWithPlaceholder.vue';
 
 const props = defineProps({
     product: {
@@ -78,6 +82,7 @@ const props = defineProps({
 });
 
 const { formatCurrency, formatDiscount } = useCurrency();
+const cartStore = useCartStore();
 
 const getBadgeClasses = (badge) => {
     const badgeLower = badge?.toLowerCase() || '';
@@ -92,9 +97,9 @@ const getBadgeClasses = (badge) => {
         return 'border-yellow-200 bg-gradient-to-br from-yellow-100 to-yellow-50 text-yellow-700';
     }
     
-    // Featured/Popular - Orange
+    // Featured/Popular - Blue
     if (badgeLower.includes('featured') || badgeLower.includes('popular')) {
-        return 'border-orange-200 bg-gradient-to-br from-orange-100 to-orange-50 text-orange-700';
+        return 'border-blue-200 bg-gradient-to-br from-blue-100 to-blue-50 text-blue-700';
     }
     
     // Default - Sky blue
@@ -103,7 +108,18 @@ const getBadgeClasses = (badge) => {
 
 const handleQuickAdd = (event) => {
     event.preventDefault();
-    // TODO: Implement quick add to cart functionality
-    console.log('Quick add:', props.product.slug);
+    event.stopPropagation();
+    cartStore.addItem(props.product);
+    
+    // Optional: Show a brief success feedback
+    const button = event.currentTarget;
+    const originalText = button.textContent;
+    button.textContent = 'Added!';
+    button.classList.add('!from-green-500', '!to-green-600');
+    
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove('!from-green-500', '!to-green-600');
+    }, 1000);
 };
 </script>

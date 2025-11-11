@@ -47,17 +47,17 @@
                         </div>
 
                         <!-- Urgency indicator -->
-                        <div class="rounded-2xl border-2 border-orange-400 bg-gradient-to-r from-orange-50 to-amber-50 p-3">
+                        <div class="rounded-2xl border-2 border-blue-400 bg-gradient-to-r from-blue-50 to-sky-50 p-3">
                             <div class="flex items-center justify-between gap-4">
-                                <div class="flex items-center gap-2 text-orange-700">
+                                <div class="flex items-center gap-2 text-blue-700">
                                     <span class="flex h-2 w-2">
-                                        <span class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-orange-400 opacity-75"></span>
-                                        <span class="relative inline-flex h-2 w-2 rounded-full bg-orange-500"></span>
+                                        <span class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-blue-400 opacity-75"></span>
+                                        <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
                                     </span>
                                     <span class="text-sm font-semibold">Hot Deal</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-slate-600">
-                                    <svg class="h-4 w-4 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <svg class="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
                                     </svg>
                                     <span class="font-mono font-semibold">{{ timeRemaining }}</span>
@@ -119,10 +119,10 @@
                 </div>
 
                 <div class="flex flex-wrap gap-3 text-sm">
-                    <!-- Primary CTA - Orange for action/conversion -->
-                    <button class="group relative overflow-hidden rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-4 font-bold uppercase tracking-[0.28em] text-white shadow-xl shadow-orange-500/30 transition-all hover:from-orange-600 hover:to-orange-700 hover:shadow-2xl hover:shadow-orange-500/40">
+                    <!-- Primary CTA - Blue for action/conversion -->
+                    <button class="group relative overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 font-bold uppercase tracking-[0.28em] text-white shadow-xl shadow-blue-500/30 transition-all hover:from-blue-600 hover:to-blue-700 hover:shadow-2xl hover:shadow-blue-500/40">
                         <span class="relative z-10">Add to cart</span>
-                        <div class="absolute inset-0 -z-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 transition-opacity group-hover:opacity-100"></div>
+                        <div class="absolute inset-0 -z-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 transition-opacity group-hover:opacity-100"></div>
                     </button>
                     
                     <!-- Secondary actions - Subtle with sky accent on hover -->
@@ -220,7 +220,7 @@ const getBadgeColor = (badge) => {
         return 'text-yellow-600';
     }
     if (badgeLower.includes('featured')) {
-        return 'text-orange-600';
+        return 'text-blue-600';
     }
     return 'text-sky-600';
 };

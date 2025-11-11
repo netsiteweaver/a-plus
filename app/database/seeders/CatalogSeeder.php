@@ -29,6 +29,12 @@ class CatalogSeeder extends Seeder
 
             [$attributes, $attributeValues] = $this->seedAttributes();
 
+            // ============================================================
+            // TEMPORARILY DISABLED: Product creation for WooCommerce import
+            // Uncomment the section below to re-enable product seeding
+            // ============================================================
+            
+            /*
             $allProducts = collect();
 
             foreach ($categories as $category) {
@@ -61,6 +67,7 @@ class CatalogSeeder extends Seeder
             }
 
             $this->seedRelatedProducts($allProducts);
+            */
         });
     }
 
